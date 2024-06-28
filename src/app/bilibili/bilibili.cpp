@@ -101,7 +101,7 @@ lv_obj_t *bilibili_load()
     main_color = lv_color_hex(0xeeeeee);
     text_color = lv_color_hex(0x000000);
     lv_obj_set_style_bg_color(now_screen, main_color, LV_STATE_DEFAULT);
-    lv_obj_set_size(now_screen, screenWidth, screenHeight);
+    lv_obj_set_size(now_screen, 480 , 320);
 
     Bilibili_icon = lv_img_create(now_screen);
     fans_icon = lv_img_create(now_screen);

@@ -1,9 +1,18 @@
+/*
+ * @Author: JaspinXu sea.xuo@gmail.com
+ * @Date: 2024-05-04 10:32:52
+ * @LastEditors: JaspinXu sea.xuo@gmail.com
+ * @LastEditTime: 2024-06-07 17:23:03
+ * @FilePath: \Software\include\head.h
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 #ifndef HEAD_H
 #define HEAD_H
 
 #include <lvgl.h>
 #include <Arduino.h>
-#include "common.h"
+#include <TFT_eSPI.h> // Hardware-specific library
+#include <SPI.h>
 #include <WiFi.h>
 #include <Arduino.h>
 #include "driver/lv_port_disp.h"
@@ -18,23 +27,13 @@
 #include "examples/lv_examples.h"
 #endif
 
-// #include <lv_demo.h>
 #include "demos/lv_demos.h"
-#include "myGuiStudy.h"
 #include "study/myTest.h"
 #include "study/myLVGL.h"
 #include "study/wifiscan.h"
 #include "study/weather.h"
-// #include "app/home/home.h"
-// #include "app/music/music.h"
-// #include "app/lunar/lunar.h"
-// #include "app/lunar/lunarCalender.h"
-
-
-//HEAD
 #include "pins_arduino.h"
 #include <Arduino.h>
-//wifi
 #include <ETH.h>
 #include <WiFi.h>
 #include <WiFiAP.h>
@@ -49,28 +48,12 @@
 #include <WiFiClientSecure.h>
 #include "esp_wifi.h"
 #include <esp_now.h>
-//bluetooth
-//#include <BLEDevice.h>
-//#include <BLEUtils.h>
-//#include <BLEService.h>
-//flash
-//#include <LittleFS.h>
 #include <SPIFFS.h>
-
 #include <ArduinoJson.h>
-//devices
-// #include "display.h"
-// #include "touch.h"
-// #include "SDcard.h"
-
 #include "bilibili.h"
-// #include "weather.h"
-
 #include "gui.h"
 
-// extern xSemaphoreHandle lv_handler_lock;
-// extern xSemaphoreHandle lv_http_lock;
-extern lv_obj_t *setting_title;
+extern lv_obj_t *setting_title; 
 extern void (*other_app)();
 
 LV_FONT_DECLARE(chinese_hei_16);

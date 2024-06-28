@@ -1,18 +1,17 @@
+/*
+ * @Author: JaspinXu sea.xuo@gmail.com
+ * @Date: 2024-05-04 10:32:54
+ * @LastEditors: JaspinXu sea.xuo@gmail.com
+ * @LastEditTime: 2024-06-17 22:42:20
+ * @FilePath: \Software\src\driver\lv_port_fatfs.c
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 /**
  * @file lv_fs_fatfs.c
  *
  */
- /*Copy this file as "lv_port_fs.c" and set this value to "1" to enable content*/
+
 #if 1
-
-//学习资料：
-//https://docs.lvgl.io/master/overview/file-system.html
-//https://github.com/lvgl/lv_fs_if
-
-/**
- * @file lv_fs_fatfs.c
- *
- */
 
 /*********************
  *      INCLUDES
@@ -22,10 +21,9 @@
 
 #define LV_USE_MY_FS_FATFS 1
 #if LV_USE_MY_FS_FATFS
-    #define LV_FS_FATFS_LETTER 'S'     /*Set an upper cased letter on which the drive will accessible (e.g. 'A')*/
-    #define LV_FS_FATFS_CACHE_SIZE 0    /*>0 to cache this number of bytes in lv_fs_read()*/
+    #define LV_FS_FATFS_LETTER 'S'   
+    #define LV_FS_FATFS_CACHE_SIZE 0   
 #endif
-
 
 #if LV_USE_MY_FS_FATFS
 #include "ff.h"
@@ -308,9 +306,5 @@ static lv_fs_res_t fs_dir_close(lv_fs_drv_t * drv, void * dir_p)
 #endif
 
 #endif /*LV_USE_FS_POSIX*/
-
-
-
-
 
 #endif /*Disable/Enable content*/

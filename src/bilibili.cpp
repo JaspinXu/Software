@@ -1,44 +1,31 @@
 #include "bilibili.h"
 
-HTTPClient http;    //创建HTTPClient 实例
-String url_bilibili = "";    //资源定位符
+HTTPClient http;    
+String url_bilibili = "";   
 
 bool Bilibili::update()
 {
-    // if(UID!="")
-    // {
         ParseData(GitURL(UID));
         return true;
-    // }
-    // return false;
 }
  
-String Bilibili::GitURL(String uid)    //拼接资源定位符，获取API链接
+String Bilibili::GitURL(String uid)    //获取API链接
 {
-  //url_bilibili =  "https://api.bilibili.com/x/relation/stat?vmid=";
-  url_bilibili =  "https://api.bilibili.com/x/web-interface/card?mid=64728369";
-//   url_bilibili += uid;
-  //url_bilibili="https://api.bilibili.com/x/web-interface/view?bvid=BV1R54y1u7kD";
- 
+  url_bilibili =  "https://api.bilibili.com/x/web-interface/card?mid=497309258";
   return url_bilibili;
 }
  
 void Bilibili::ParseData(String url)
 {  
-    DynamicJsonDocument doc(3072);  //分配内存
-    http.begin(url);    //请求网址
+    DynamicJsonDocument doc(3072); 
+    http.begin(url);   
     
-    int httpGet = http.GET();    //获得服务器状态码
+    int httpGet = http.GET();   
     if(httpGet > 0)
     {
-        // Serial.printf("HTTPGET is %d",httpGet);    //打印服务器状态码
-
-        if(httpGet == HTTP_CODE_OK)    //判断是否请求成功
+        if(httpGet == HTTP_CODE_OK)  
         {
-
             String json = http.getString();    //获得响应体信息
-            // Serial.println(json);    //打印响应体信息
-
             deserializeJson(doc, json);    //Json解析
             
             fans=doc["data"]["card"]["fans"].as<long>();

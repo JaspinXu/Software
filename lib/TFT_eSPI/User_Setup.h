@@ -56,7 +56,7 @@
 //#define ST7789_2_DRIVER    // Minimal configuration option, define additional parameters below for this display
 //#define R61581_DRIVER
 //#define RM68140_DRIVER
-// #define ST7796_DRIVER
+#define ST7796_DRIVER
 //#define SSD1351_DRIVER
 //#define SSD1963_480_DRIVER
 //#define SSD1963_800_DRIVER
@@ -84,11 +84,11 @@
 // #define TFT_WIDTH  80
 // #define TFT_WIDTH  128
 // #define TFT_WIDTH  172 // ST7789 172 x 320
-// #define TFT_WIDTH  240 // ST7789 240 x 240 and 240 x 320
+#define TFT_WIDTH  320 // ST7789 240 x 240 and 240 x 320
 // #define TFT_HEIGHT 160
 // #define TFT_HEIGHT 128
 // #define TFT_HEIGHT 240 // ST7789 240 x 240
-// #define TFT_HEIGHT 320 // ST7789 240 x 320
+#define TFT_HEIGHT 480 // ST7789 240 x 320
 // #define TFT_HEIGHT 240 // GC9A01 240 x 240
 
 // For ST7735 ONLY, define the type of display, originally this was based on the
@@ -244,24 +244,27 @@
 // Example below is for ESP32 Parallel interface with UNO displays
 
 // Tell the library to use 8 bit parallel mode (otherwise SPI is assumed)
-//#define TFT_PARALLEL_8_BIT
+#define TFT_PARALLEL_8_BIT
 
 // The ESP32 and TFT the pins used for testing are:
-//#define TFT_CS   33  // Chip select control pin (library pulls permanently low
-//#define TFT_DC   15  // Data Command control pin - must use a pin in the range 0-31
-//#define TFT_RST  32  // Reset pin, toggles on startup
+#define TFT_CS   10  // Chip select control pin (library pulls permanently low
+#define TFT_DC   9  // Data Command control pin - must use a pin in the range 0-31
+#define TFT_RST  14  // Reset pin, toggles on startup
 
-//#define TFT_WR    4  // Write strobe control pin - must use a pin in the range 0-31
-//#define TFT_RD    2  // Read strobe control pin
+#define TFT_WR    15  // Write strobe control pin - must use a pin in the range 0-31
+#define TFT_RD    6  // Read strobe control pin
 
-//#define TFT_D0   12  // Must use pins in the range 0-31 for the data bus
-//#define TFT_D1   13  // so a single register write sets/clears all bits.
-//#define TFT_D2   26  // Pins can be randomly assigned, this does not affect
-//#define TFT_D3   25  // TFT screen update performance.
-//#define TFT_D4   17
-//#define TFT_D5   16
-//#define TFT_D6   27
-//#define TFT_D7   14
+#define TFT_D0   1  // Must use pins in the range 0-31 for the data bus
+#define TFT_D1   2  // so a single register write sets/clears all bits.
+#define TFT_D2   7  // Pins can be randomly assigned, this does not affect
+#define TFT_D3   8  // TFT screen update performance.
+#define TFT_D4   3
+#define TFT_D5   18
+#define TFT_D6   17
+#define TFT_D7   16
+
+#define TFT_BL   4        // LED back-light control pin
+#define TFT_BACKLIGHT_ON LOW  // Level to turn ON back-light (HIGH or LOW)
 
 // ######       EDIT THE PINs BELOW TO SUIT YOUR STM32 SPI TFT SETUP        ######
 

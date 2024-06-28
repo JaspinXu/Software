@@ -2,7 +2,7 @@
 
 const char *MQTT_SERVER = "bemfa.com";
 const int MQTT_PORT = 9501;
-const char *MQTT_ID = "7ac43bc501d1d99d4f09fe6e6c5ed0f9";
+const char *MQTT_ID = "bfa517146146499f9198a165d2991110";
 const char *TOPIC = "esp32s3";
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -248,8 +248,8 @@ lv_obj_t *ota_load()
     // Wire1.begin(BM8563_I2C_SDA, BM8563_I2C_SCL);
     // rtc.begin();
 
-    client.setServer(MQTT_SERVER, MQTT_PORT); // 设定MQTT服务器与使用的端口，1883是默认的MQTT端口
-    client.setCallback(callback);             // 设定回调方式，当ESP8266收到订阅消息时会调用此方法
+    client.setServer(MQTT_SERVER, MQTT_PORT); // 设定MQTT服务器与使用的端口
+    client.setCallback(callback);             // 设定回调方式，当ESP32收到订阅消息时会调用此方法
 
     now_screen = lv_obj_create(NULL);
 
@@ -263,8 +263,8 @@ lv_obj_t *ota_load()
 
     // Write codes label_1_label_1
     lv_obj_t *label_1_label_1 = lv_label_create(now_screen);
-    lv_obj_set_pos(label_1_label_1, 55, 89);
-    lv_obj_set_size(label_1_label_1, 371, 142);
+    lv_obj_set_pos(label_1_label_1, 55, 89); ////这里或许需要微调1111111111111111111111111111111111111111111111111111111111
+    lv_obj_set_size(label_1_label_1, 371, 142);    ////这里或许需要微调111111111111111111111111111111111111111111111111111
     lv_obj_set_scrollbar_mode(label_1_label_1, LV_SCROLLBAR_MODE_OFF);
     lv_label_set_text(label_1_label_1, "请使用APP操控或\n远程更新固件");
     lv_label_set_long_mode(label_1_label_1, LV_LABEL_LONG_WRAP);
@@ -293,8 +293,8 @@ lv_obj_t *ota_load()
 
     // Write codes label_1_spinner_1
     lv_obj_t *label_1_spinner_1 = lv_spinner_create(now_screen, 10000, 20);
-    lv_obj_set_pos(label_1_spinner_1, 190, 170);
-    lv_obj_set_size(label_1_spinner_1, 100, 100);
+    lv_obj_set_pos(label_1_spinner_1, 190, 170);       ////这里或许需要微调111111111111111111111111111111111111111111111111111
+    lv_obj_set_size(label_1_spinner_1, 100, 100);         ////这里或许需要微调111111111111111111111111111111111111111111111111111
 
     // Set style for label_1_spinner_1. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
     lv_obj_set_style_bg_color(label_1_spinner_1, lv_color_make(0xee, 0xee, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -320,8 +320,8 @@ lv_obj_t *ota_load()
 
     // Write codes label_1_btn_1
     lv_obj_t *label_1_btn_1 = lv_btn_create(now_screen);
-    lv_obj_set_pos(label_1_btn_1, 363, 18);
-    lv_obj_set_size(label_1_btn_1, 100, 50);
+    lv_obj_set_pos(label_1_btn_1, 363, 18);           ////这里或许需要微调111111111111111111111111111111111111111111111111111
+    lv_obj_set_size(label_1_btn_1, 100, 50);         ////这里或许需要微调111111111111111111111111111111111111111111111111111
     lv_obj_set_scrollbar_mode(label_1_btn_1, LV_SCROLLBAR_MODE_OFF);
 
     // Set style for label_1_btn_1. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT

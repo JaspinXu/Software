@@ -133,7 +133,7 @@
 //#include <User_Setups/Dustin_ILI9341_ESP32.h>           // Setup file for Dustin Watts PCB with ILI9341
 //#include <User_Setups/ILI9225.h>
 
-#include <User_Setups/Setup_myTFT_ST7796_parallel.h>       //我设计的3.5寸TFT+CPT
+#include <User_Setups/Setup_ST7796_8bit_parallel.h>       //3.5寸TFT屏幕
 
 
 

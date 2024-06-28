@@ -3,10 +3,10 @@
 // const char *password = "7bsgbsg7";
 
 // lv_ui guider_ui;
-// xSemaphoreHandle lv_handler_lock;
+// xSemaphoreHandle lv_handler_lock;     //x信号量处理
 // lv_style_t style_chinese_16_white;
 // lv_style_t style_chinese_16_black;
-// bool open_finish = 0;
+// bool open_finish = 0;        //启动与关闭
 // void open_anim(void *p)
 // {
 //   uint8_t red = 63;

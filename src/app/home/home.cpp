@@ -32,8 +32,8 @@ WiFiClient computer_client;
 WiFiClient weather_client;
 WiFiClient advice_client;
 // 注意两个client不能同时运行，需要使用互斥锁
-// const char *ssid = "vivoS12";
-// const char *password = "7bsgbsg7";
+// const char *ssid = "JaspinXu";
+// const char *password = "xu20040716";
 const char *host = "192.168.118.137";
 int cpu_usage = 0;
 int gpu_tem = 0;

@@ -1,3 +1,11 @@
+/*
+ * @Author: JaspinXu sea.xuo@gmail.com
+ * @Date: 2024-05-04 10:32:54
+ * @LastEditors: JaspinXu sea.xuo@gmail.com
+ * @LastEditTime: 2024-06-09 12:15:27
+ * @FilePath: \Software\src\app\fire\fire.cpp
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 #include "fire.h"
 #include "app/music/music.h"
 
@@ -155,7 +163,7 @@ void smtp_init()
     config.time.day_light_offset = 0;
 
     SMTP_Message message;
-    message.sender.name = F("Bsgbsg7's ESP Box");
+    message.sender.name = F("JaspinXu's ESP Box");
     message.sender.email = AUTHOR_EMAIL;
     message.subject = F("FIRE!");
     message.addRecipient(F("Master"), RECIPIENT_EMAIL);
@@ -165,7 +173,7 @@ void smtp_init()
     message.text.charSet = F("us-ascii");
     message.text.transfer_encoding = Content_Transfer_Encoding::enc_7bit;
     message.priority = esp_mail_smtp_priority::esp_mail_smtp_priority_normal;
-    message.addHeader(F("Message-ID: <Bsgbsg7@Outlook.com>"));
+    message.addHeader(F("Message-ID: <3502093985@qq.com>"));
 
     if (!smtp.connect(&config))
     {

@@ -40,6 +40,7 @@
   #include "TFT_config.h"
 #endif
 #include <User_Setup_Select.h>
+//#include <User_Setup.h>
 
 // Handle FLASH based storage e.g. PROGMEM
 #if defined(ARDUINO_ARCH_RP2040)
