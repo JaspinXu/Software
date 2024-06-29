@@ -3,10 +3,10 @@
 #include "app/music/music.h"
 #include "app/ota/ota.h"
 #include "app/fire/fire.h"
-double ampmFlag = 0;         // 0--24；1--AM/PM
-double httpFlag = 201;       // http互斥锁
-double beginFlag = 0;        // 初始化只执行一次
-double alarm_timer_flag = 0; // 闹钟警报标志位
+double ampmFlag = 0;         // 上午与下午
+double httpFlag = 201;       // 互斥锁
+double beginFlag = 0;      
+double alarm_timer_flag = 0; 
 int music_choose_flag = 2;   // 默认播放第一首歌
 lv_timer_t *clock_timer;
 lv_timer_t *computer_timer;
@@ -23,18 +23,16 @@ static lv_dht11_t lv_dht11;
 // PCF8563
 I2C_BM8563 rtc(I2C_BM8563_DEFAULT_ADDRESS, Wire1);
 const char *ntpServer = "ntp.aliyun.com";
-I2C_BM8563_TimeTypeDef timeStruct = {0}; // 时间存储
+I2C_BM8563_TimeTypeDef timeStruct = {0}; 
 I2C_BM8563_DateTypeDef dateStruct = {0};
-I2C_BM8563_TimeTypeDef alarmStruct = {18, 48, 0}; // 闹钟存储
-// My_Weather_t weatherStruct;// 天气存储
+I2C_BM8563_TimeTypeDef alarmStruct = {13, 14, 0}; 
 // computer
 WiFiClient computer_client;
 WiFiClient weather_client;
 WiFiClient advice_client;
-// 注意两个client不能同时运行，需要使用互斥锁
 // const char *ssid = "JaspinXu";
 // const char *password = "xu20040716";
-const char *host = "192.168.118.137";
+const char *host = "172.25.149.70";
 int cpu_usage = 0;
 int gpu_tem = 0;
 int gpu_usage = 0;
@@ -49,11 +47,11 @@ int minutes = 0;
 int second = 0;
 
 // weather
-const char *results_0_daily_0_low = "25";
-const char *results_0_daily_0_high = "35";
+const char *results_0_daily_0_low = "24";
+const char *results_0_daily_0_high = "33";
 int weather_timer_flag = 0;
-int tem_now = 34;
-String position = "青岛";
+int tem_now = 31;
+String position = "山东青岛";
 String weather_condition = "晴";
 String air = "空气优";
 String update_time = "20:13:38";
@@ -111,9 +109,6 @@ void pcf8563_timer(lv_timer_t *timer)
     hour = timeStruct.hours;
     minutes = timeStruct.minutes;
     second = timeStruct.seconds;
-
-    // Serial.println(timer==NULL);
-    // Serial.println(timer->user_data == NULL);
 
     if (timer != NULL && timer->user_data != NULL)
     {
@@ -204,15 +199,6 @@ void computer_monitor(lv_timer_t *timer)
         dataStr = line.substring(dataStart, dataEnd);
         cpu_tem = dataStr.toInt();
 
-        // Serial.print("cpu_usage :");
-        // Serial.println(cpu_usage);
-        // Serial.print("gpu_usage :");
-        // Serial.println(gpu_usage);
-        // Serial.print("gpu_tem :");
-        // Serial.println(gpu_tem);
-        // Serial.print("cpu_tem :");
-        // Serial.println(cpu_tem);
-
         if (timer != NULL && timer->user_data != NULL)
         {
             lv_computer_t *computer = (lv_computer_t *)(timer->user_data);
@@ -281,7 +267,6 @@ void weather_timer_cb(lv_timer_t *timer)
         }
         if (weather->weather_air != NULL)
         {
-            // lv_label_set_text_fmt(weather->weather_air, "%s|空气%s", weather_condition, air);
             lv_label_set_text_fmt(weather->weather_air, "%s|空气优", weather_condition);
         }
         if (weather->update_time != NULL)
@@ -293,22 +278,15 @@ void weather_timer_cb(lv_timer_t *timer)
 
 String extractTimeFromDateTime(String dateTimeString)
 {
-    // 找到 'T' 的位置
     int tIndex = dateTimeString.indexOf('T');
-
-    // 从 'T' 后面截取时间部分
     String timeString = dateTimeString.substring(tIndex + 1);
-
-    // 找到时区偏移部分的起始位置
     int offsetIndex = timeString.indexOf('+');
 
     if (offsetIndex != -1)
     {
-        // 去除时区偏移部分
         timeString = timeString.substring(0, offsetIndex);
     }
 
-    // 返回时间部分
     return timeString;
 }
 
@@ -316,10 +294,6 @@ void dht11_get(lv_timer_t *timer)
 {
     float humidity = dht.readHumidity();
     float temperature = dht.readTemperature();
-    // Serial.println("humidity");
-    // Serial.println(humidity);
-    // Serial.println("temperature");
-    // Serial.println(temperature);
 
     if (timer != NULL && timer->user_data != NULL)
     {
@@ -354,7 +328,6 @@ void alarm_timer_cb(lv_timer_t *timer)
         if (alarm_timer_flag == 0)
         {
             lv_timer_del(clock_timer);
-            // lv_timer_del(computer_timer);
             lv_timer_del(weather_timer);
             lv_timer_del(alarm_timer);
             lv_timer_del(dht11_timer);
@@ -374,7 +347,6 @@ void mq2_timer_cb(lv_timer_t *timer)
     if (digitalRead(5) == 0)
     {
         lv_timer_del(clock_timer);
-        // lv_timer_del(computer_timer);
         lv_timer_del(weather_timer);
         lv_timer_del(alarm_timer);
         lv_timer_del(dht11_timer);
@@ -391,22 +363,16 @@ lv_obj_t *home_load()
         pinMode(5, INPUT_PULLUP);
         Wire1.begin(BM8563_I2C_SDA, BM8563_I2C_SCL);
         rtc.begin();
-        // dht11
         dht.begin();
-        // Init RTC
         configTime(8 * 3600, 0, ntpServer);
-        // // Get local time
         struct tm timeInfo;
         if (getLocalTime(&timeInfo))
         {
-            // Set RTC time
             I2C_BM8563_TimeTypeDef timeStruct;
             timeStruct.hours = timeInfo.tm_hour;
             timeStruct.minutes = timeInfo.tm_min;
             timeStruct.seconds = timeInfo.tm_sec;
             rtc.setTime(&timeStruct);
-
-            // Set RTC Date
 
             I2C_BM8563_DateTypeDef dateStruct;
             dateStruct.weekDay = timeInfo.tm_wday;
@@ -419,24 +385,11 @@ lv_obj_t *home_load()
         Serial.println("HERE");
     }
 
-    // Create keyboard on screen
-    // g_kb_screen = lv_keyboard_create(now_screen);
-    // lv_obj_add_event_cb(g_kb_screen, kb_screen_event_cb, LV_EVENT_ALL, NULL);
-    // lv_obj_add_flag(g_kb_screen, LV_OBJ_FLAG_HIDDEN);
-    // lv_obj_set_style_text_font(g_kb_screen, &lv_font_montserrat_18, LV_PART_MAIN | LV_STATE_DEFAULT);
-
     lv_obj_set_scrollbar_mode(now_screen, LV_SCROLLBAR_MODE_OFF);
-    // Set style for screen. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
     lv_obj_set_style_bg_color(now_screen, lv_color_make(0xff, 0xff, 0xff), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(now_screen, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(now_screen, LV_GRAD_DIR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(now_screen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    // Write codes now_screen
-    // lv_obj_t *now_screen = lv_obj_create(now_screen);
-    // lv_obj_set_pos(now_screen, 0, 0);
-    // lv_obj_set_size(now_screen, 480, 320);
-    // lv_obj_set_scrollbar_mode(now_screen, LV_SCROLLBAR_MODE_OFF);
 
     // Set style for now_screen. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
     lv_obj_set_style_radius(now_screen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -450,7 +403,7 @@ lv_obj_t *home_load()
     lv_obj_set_style_shadow_spread(now_screen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_x(now_screen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_y(now_screen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(now_screen, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(now_screen, lv_color_make(0x00, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_width(now_screen, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(now_screen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(now_screen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -507,7 +460,7 @@ lv_obj_t *home_load()
     lv_obj_set_pos(screen_label_6, 13, 40);
     lv_obj_set_size(screen_label_6, 161, 36);
     lv_obj_set_scrollbar_mode(screen_label_6, LV_SCROLLBAR_MODE_OFF);
-    lv_label_set_text(screen_label_6, "2023-06-03");
+    lv_label_set_text(screen_label_6, "2024-06-29");
     lv_label_set_long_mode(screen_label_6, LV_LABEL_LONG_WRAP);
 
     // Set style for screen_label_6. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
@@ -556,12 +509,12 @@ lv_obj_t *home_load()
     lv_obj_set_pos(screen_label_8, 44, 115);
     lv_obj_set_size(screen_label_8, 101, 35);
     lv_obj_set_scrollbar_mode(screen_label_8, LV_SCROLLBAR_MODE_OFF);
-    lv_label_set_text(screen_label_8, "星期四");
+    lv_label_set_text(screen_label_8, "星期六");
     lv_label_set_long_mode(screen_label_8, LV_LABEL_LONG_WRAP);
 
     // Set style for screen_label_8. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
     lv_obj_set_style_radius(screen_label_8, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(screen_label_8, lv_color_make(0x5d, 0x40, 0x82), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(screen_label_8, lv_color_make(0xb2, 0x22, 0x22), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(screen_label_8, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(screen_label_8, LV_GRAD_DIR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(screen_label_8, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -640,7 +593,7 @@ lv_obj_t *home_load()
 
     // Write codes screen_label_16
     lv_obj_t *screen_label_16 = lv_label_create(now_screen);
-    lv_obj_set_pos(screen_label_16, 260, 71);
+    lv_obj_set_pos(screen_label_16, 260, 70);
     lv_obj_set_size(screen_label_16, 27, 9);
     lv_obj_set_scrollbar_mode(screen_label_16, LV_SCROLLBAR_MODE_OFF);
     lv_label_set_text(screen_label_16, "湿度");
@@ -673,7 +626,6 @@ lv_obj_t *home_load()
     lv_obj_set_pos(screen_label_12, 64, 249);
     lv_obj_set_size(screen_label_12, 61, 15);
     lv_obj_set_scrollbar_mode(screen_label_12, LV_SCROLLBAR_MODE_OFF);
-    // lv_label_set_text(screen_label_12, "32/21℃");
     lv_label_set_text_fmt(screen_label_12, "%s/%s℃", results_0_daily_0_high, results_0_daily_0_low);
     lv_label_set_long_mode(screen_label_12, LV_LABEL_LONG_WRAP);
 
@@ -813,7 +765,6 @@ lv_obj_t *home_load()
     lv_obj_set_pos(screen_label_10, 62, 198);
     lv_obj_set_size(screen_label_10, 65, 16);
     lv_obj_set_scrollbar_mode(screen_label_10, LV_SCROLLBAR_MODE_OFF);
-    // lv_label_set_text(screen_label_10, "即墨区");
     lv_label_set_text_fmt(screen_label_10, "%s", position);
     lv_label_set_long_mode(screen_label_10, LV_LABEL_LONG_WRAP);
 
@@ -904,7 +855,7 @@ lv_obj_t *home_load()
     lv_obj_set_pos(screen_label_5, 283, 171);
     lv_obj_set_size(screen_label_5, 80, 20);
     lv_obj_set_scrollbar_mode(screen_label_5, LV_SCROLLBAR_MODE_OFF);
-    lv_label_set_text(screen_label_5, "状态监测器");
+    lv_label_set_text(screen_label_5, "电脑监测器");
     lv_label_set_long_mode(screen_label_5, LV_LABEL_LONG_WRAP);
 
     // Set style for screen_label_5. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
@@ -934,8 +885,7 @@ lv_obj_t *home_load()
     lv_obj_set_pos(screen_label_13, 47, 267);
     lv_obj_set_size(screen_label_13, 94, 15);
     lv_obj_set_scrollbar_mode(screen_label_13, LV_SCROLLBAR_MODE_OFF);
-    // lv_label_set_text(screen_label_13, "多云|空气优");
-    lv_label_set_text_fmt(screen_label_13, "%s|空气优", weather_condition); // 空气的api暂时不想写了
+    lv_label_set_text_fmt(screen_label_13, "%s|空气优", weather_condition);
     lv_label_set_long_mode(screen_label_13, LV_LABEL_LONG_WRAP);
 
     // Set style for screen_label_13. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
@@ -965,7 +915,6 @@ lv_obj_t *home_load()
     lv_obj_set_pos(screen_label_11, 41, 220);
     lv_obj_set_size(screen_label_11, 106, 21);
     lv_obj_set_scrollbar_mode(screen_label_11, LV_SCROLLBAR_MODE_OFF);
-    // lv_label_set_text(screen_label_11, "28℃");
     lv_label_set_text_fmt(screen_label_11, "%02d℃", tem_now);
     lv_label_set_long_mode(screen_label_11, LV_LABEL_LONG_WRAP);
 
@@ -996,7 +945,6 @@ lv_obj_t *home_load()
     lv_obj_set_pos(screen_label_14, 15, 286);
     lv_obj_set_size(screen_label_14, 159, 17);
     lv_obj_set_scrollbar_mode(screen_label_14, LV_SCROLLBAR_MODE_OFF);
-    // lv_label_set_text(screen_label_14, "更新时间：15:23:30");
     lv_label_set_text_fmt(screen_label_14, "更新时间：%s", update_time);
     lv_label_set_long_mode(screen_label_14, LV_LABEL_LONG_WRAP);
 
@@ -1681,7 +1629,6 @@ lv_obj_t *home_load()
     lv_obj_add_event_cb(now_screen, gesture_home, LV_EVENT_GESTURE, NULL);
 
     clock_timer = lv_timer_create(pcf8563_timer, 200, (void *)&lv_clock);
-    // computer_timer = lv_timer_create(computer_monitor, 3000, (void *)&lv_computer);
     weather_timer = lv_timer_create(weather_timer_cb, 600000, (void *)&lv_weather);
     alarm_timer = lv_timer_create(alarm_timer_cb, 1000, NULL);
     dht11_timer = lv_timer_create(dht11_get, 3000, (void *)&lv_dht11);
@@ -1691,7 +1638,6 @@ lv_obj_t *home_load()
 }
 
 static lv_obj_t *kb;
-// static void alarm_change(lv_event_t *e)
 static void time_change(lv_event_t *e)
 {
     int code = lv_event_get_code(e);
@@ -1700,16 +1646,11 @@ static void time_change(lv_event_t *e)
     if (code == LV_EVENT_FOCUSED)
     {
         time_changed = 1;
-        // 检查当前输入设备类型是否为非键盘
         if (lv_indev_get_type(lv_indev_get_act()) != LV_INDEV_TYPE_KEYPAD)
         {
             lv_keyboard_set_mode(kb, LV_KEYBOARD_MODE_NUMBER);
             lv_obj_move_foreground(kb);
-            // lv_textarea_set_accepted_chars(time_text, "0123456789");`
-            // lv_textarea_set_text(time_text, bilibili.UID.c_str());
-            // 将键盘对象kb关联到目标对象target，以便在键盘上输入的文本直接显示在目标对象上
             lv_keyboard_set_textarea(kb, target);
-            // 清除键盘对象kb的隐藏标志，使其可见
             lv_obj_clear_flag(kb, LV_OBJ_FLAG_HIDDEN);
         }
     }
@@ -1722,7 +1663,6 @@ static void time_change(lv_event_t *e)
     else if (code == LV_EVENT_CANCEL)
     {
         lv_obj_move_background(kb);
-        // lv_textarea_set_text(time_text, bilibili.UID.c_str());
         lv_obj_add_flag(kb, LV_OBJ_FLAG_HIDDEN);
         lv_indev_reset(NULL, target);
     }
@@ -1736,16 +1676,11 @@ static void alarm_change(lv_event_t *e)
     if (code == LV_EVENT_FOCUSED)
     {
         alarm_changed = 1;
-        // 检查当前输入设备类型是否为非键盘
         if (lv_indev_get_type(lv_indev_get_act()) != LV_INDEV_TYPE_KEYPAD)
         {
             lv_keyboard_set_mode(kb, LV_KEYBOARD_MODE_NUMBER);
             lv_obj_move_foreground(kb);
-            // lv_textarea_set_accepted_chars(time_text, "0123456789");`
-            // lv_textarea_set_text(alarm_text, bilibili.UID.c_str());
-            // 将键盘对象kb关联到目标对象target，以便在键盘上输入的文本直接显示在目标对象上
             lv_keyboard_set_textarea(kb, target);
-            // 清除键盘对象kb的隐藏标志，使其可见
             lv_obj_clear_flag(kb, LV_OBJ_FLAG_HIDDEN);
         }
     }
@@ -1758,7 +1693,6 @@ static void alarm_change(lv_event_t *e)
     else if (code == LV_EVENT_CANCEL)
     {
         lv_obj_move_background(kb);
-        // lv_textarea_set_text(time_text, bilibili.UID.c_str());
         lv_obj_add_flag(kb, LV_OBJ_FLAG_HIDDEN);
         lv_indev_reset(NULL, target);
     }
@@ -1776,8 +1710,6 @@ static void kb_screen_event_cb(lv_event_t *e)
 
 void weather_init()
 {
-    // if (httpFlag > 200)
-    // {
     const size_t capacity = 2 * JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(6) + JSON_OBJECT_SIZE(14) + 390;
     const size_t capacity2 = 2 * JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(6) + JSON_OBJECT_SIZE(14) + 390;
     String now_https = String("GET /v3/weather/now.json?key=SYQAZcQPIoDp3vOPG&location=qingdao&language=zh-Hans&unit=c&unit=c&start=-1&days=1") + " HTTP/1.1\r\n" + // 请求的是首页信息，HTTP版本号是1.1
@@ -1792,17 +1724,16 @@ void weather_init()
 
     if (weather_client.connect("api.seniverse.com", 80))
     {
-        weather_client.print(now_https); // 向服务器发送HTTP请求
+        weather_client.print(now_https); 
         while (weather_client.connected() || weather_client.available())
-        { // 服务器保持连接
+        { 
             if (weather_client.available())
             {
-                String line = weather_client.readStringUntil('\n'); // 等待响应并且读取响应信息
-                // Serial.println(line);
+                String line = weather_client.readStringUntil('\n'); 
                 DynamicJsonDocument doc(capacity);
                 deserializeJson(doc, line);
                 JsonObject now = doc["results"][0]["now"];
-                tem_now = now["temperature"].as<int>(); // "33"
+                tem_now = now["temperature"].as<int>();
                 update_time = doc["results"][0]["last_update"].as<String>();
                 position = doc["results"][0]["location"]["name"].as<String>();
                 weather_condition = now["text"].as<String>();
@@ -1810,18 +1741,9 @@ void weather_init()
         }
         weather_client.stop();
     }
-    // Serial.println(tem_now);
-    // Serial.println(weather_condition);
-    // // Serial.println(air);
-    // Serial.println(update_time);
 
-    // 在你的代码中使用
     update_time = extractTimeFromDateTime(update_time);
     Serial.println(update_time);
-    // Serial.println("httpFlag");
-    // Serial.println(httpFlag);
-    //     httpFlag = 0;
-    // }
 }
 
 lv_obj_t *home_config_load()
@@ -1881,8 +1803,6 @@ lv_obj_t *home_config_load()
 
     String temp = "";
     temp += "year:" + String(year) + ";month:" + String(month) + ";day:" + String(day) + ";hour:" + String(hour) + ";min:" + String(minutes) + ";sec:" + String(second);
-    // Serial.println("time");
-    // Serial.println(temp);
     lv_textarea_set_text(time_text, temp.c_str());
 
     // use keyboard on time_text
@@ -2060,8 +1980,6 @@ lv_obj_t *home_config_load()
 
     String temp1 = "";
     temp1 += "hour:" + String(alarmStruct.hours) + ";min:" + String(alarmStruct.minutes) + ";sec:" + String(alarmStruct.seconds);
-    // Serial.println("temp");
-    // Serial.println(temp1);
     lv_textarea_set_text(alarm_text, temp1.c_str());
 
     // use keyboard on alarm_text
@@ -2185,7 +2103,6 @@ void gesture_home(lv_event_t *event)
         beginFlag = 1;
         Serial.println("OPEN LUNAR CONFIG LOAD ");
         lv_timer_del(clock_timer);
-        // lv_timer_del(computer_timer);
         lv_timer_del(weather_timer);
         lv_timer_del(alarm_timer);
         lv_timer_del(dht11_timer);
@@ -2197,7 +2114,6 @@ void gesture_home(lv_event_t *event)
         beginFlag = 1;
         Serial.println("OPEN HOME CONFIG LOAD ");
         lv_timer_del(clock_timer);
-        // lv_timer_del(computer_timer);
         lv_timer_del(weather_timer);
         lv_timer_del(alarm_timer);
         lv_timer_del(dht11_timer);
@@ -2208,7 +2124,6 @@ void gesture_home(lv_event_t *event)
     {
         beginFlag = 1;
         lv_timer_del(clock_timer);
-        // lv_timer_del(computer_timer);
         lv_timer_del(weather_timer);
         lv_timer_del(alarm_timer);
         lv_timer_del(dht11_timer);
@@ -2220,7 +2135,6 @@ void gesture_home(lv_event_t *event)
     {
         beginFlag = 1;
         lv_timer_del(clock_timer);
-        // lv_timer_del(computer_timer);
         lv_timer_del(weather_timer);
         lv_timer_del(alarm_timer);
         lv_timer_del(dht11_timer);

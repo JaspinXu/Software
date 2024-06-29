@@ -92,9 +92,9 @@ extern "C"
 
 	typedef struct _lv_clock
 	{
-		lv_obj_t *time_label;	 // 时间标签
-		lv_obj_t *date_label;	 // 日期标签
-		lv_obj_t *weekday_label; // 星期标签
+		lv_obj_t *time_label;	 
+		lv_obj_t *date_label;	 
+		lv_obj_t *weekday_label; 
 	} lv_clock_t;
 
 	typedef struct _lv_computer
@@ -117,15 +117,6 @@ extern "C"
 		lv_obj_t *weather_air;
 		lv_obj_t *update_time;
 	} lv_weather_t;
-
-	// typedef struct
-	// {
-	// 	String position;
-	// 	int tem_now;
-	// 	int tem_high_low;
-	// 	String weather_air;
-	// 	String update_time;
-	// } My_Weather_t;
 
 	typedef struct _lv_dht11
 	{
@@ -161,14 +152,14 @@ extern "C"
 	void gesture_home(lv_event_t *event);
 	String extractTimeFromDateTime(String dateTimeString);
 	void weather_init();
+
 	/**********************
 	 * GLOBAL PROTOTYPES
 	 **********************/
+	
 	extern lv_obj_t *home_load();
-	// extern uint32_t slider_value;
-	// extern void refresh_test(void);
 	extern lv_home_config_t home_config_ui;
-	// extern bool Delay(uint32_t time);
+
 	/**********************
 	 *      MACROS
 	 **********************/
