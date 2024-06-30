@@ -8,6 +8,21 @@
  */
 #include "fire.h"
 #include "app/music/music.h"
+#include <FastLED.h>
+
+#define LED_PIN     13
+#define NUM_LEDS    1
+#define BRIGHTNESS  50
+#define LED_TYPE    SK6812
+#define COLOR_ORDER GRB
+#define UPDATES_PER_SECOND 100
+
+CRGB leds[NUM_LEDS];
+CRGBPalette16 currentPalette;
+TBlendType    currentBlending;
+
+extern CRGBPalette16 myRedWhiteBluePalette;
+extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
 
 SMTPSession smtp;
 double smptFlag;
@@ -51,7 +66,7 @@ lv_obj_t *fire_load()
 
     // Set style for label_2_btn_1. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
     lv_obj_set_style_radius(label_2_btn_1, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(label_2_btn_1, lv_color_make(0xff, 0x00, 0x27), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(label_2_btn_1, lv_color_make(0x00, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(label_2_btn_1, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(label_2_btn_1, LV_GRAD_DIR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(label_2_btn_1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -82,17 +97,17 @@ lv_obj_t *fire_load()
 
     // Set style for label_2_label_3. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
     lv_obj_set_style_radius(label_2_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(label_2_label_3, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(label_2_label_3, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(label_2_label_3, lv_color_make(0xff, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_color(label_2_label_3, lv_color_make(0xff, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(label_2_label_3, LV_GRAD_DIR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(label_2_label_3, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(label_2_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_color(label_2_label_3, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(label_2_label_3, lv_color_make(0xff, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_opa(label_2_label_3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_spread(label_2_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_x(label_2_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_y(label_2_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(label_2_label_3, lv_color_make(0x00, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(label_2_label_3, lv_color_make(0xff, 0xff, 0xff), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(label_2_label_3, &lv_chinese_font_24_all, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(label_2_label_3, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(label_2_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -112,7 +127,7 @@ lv_obj_t *fire_load()
 
     // Set style for label_2_label_4. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
     lv_obj_set_style_radius(label_2_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(label_2_label_4, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(label_2_label_4, lv_color_make(0xff, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(label_2_label_4, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(label_2_label_4, LV_GRAD_DIR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(label_2_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -122,7 +137,7 @@ lv_obj_t *fire_load()
     lv_obj_set_style_shadow_spread(label_2_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_x(label_2_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_y(label_2_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(label_2_label_4, lv_color_make(0x00, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(label_2_label_4, lv_color_make(0xff, 0xff, 0xff), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(label_2_label_4, &lv_chinese_font_32_all, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(label_2_label_4, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(label_2_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -134,13 +149,10 @@ lv_obj_t *fire_load()
 
     lv_obj_add_event_cb(label_2_btn_1, fire_gesture, LV_EVENT_LONG_PRESSED, NULL);
 
-    /**
-     * @brief Construct a new smtp init object
-     * 此处先init会导致页面刷新有延迟
-     *
-     */
+    SK6812Init();
     smtp_init();
-    show_number1();
+    SK6812Loop();
+    show_number2();
     fire_timer = lv_timer_create(fire_timer_cb, 5000, NULL);
 
     return now_screen;
@@ -163,7 +175,7 @@ void smtp_init()
     config.time.day_light_offset = 0;
 
     SMTP_Message message;
-    message.sender.name = F("JaspinXu's ESP Box");
+    message.sender.name = F("JaspinXu's ESP32S3");
     message.sender.email = AUTHOR_EMAIL;
     message.subject = F("FIRE!");
     message.addRecipient(F("Master"), RECIPIENT_EMAIL);
@@ -177,7 +189,6 @@ void smtp_init()
 
     if (!smtp.connect(&config))
     {
-        // ESP_MAIL_PRINTF("Connection error, Status Code: %d, Error Code: %d, Reason: %s", smtp.statusCode(), smtp.errorCode(), smtp.errorReason().c_str());
         return;
     }
 
@@ -195,9 +206,6 @@ void smtp_init()
 
     /* Start sending Email and close the session */
     if (!MailClient.sendMail(&smtp, &message))
-        // ESP_MAIL_PRINTF("Error, Status Code: %d, Error Code: %d, Reason: %s", smtp.statusCode(), smtp.errorCode(), smtp.errorReason().c_str());
-
-        // to clear sending result log
         smtp.sendingResult.clear();
 }
 
@@ -208,19 +216,12 @@ void smtpCallback(SMTP_Status status)
     if (status.success())
     {
         Serial.println("----------------");
-        // ESP_MAIL_PRINTF("Message sent success: %d\n", status.completedCount());
-        // ESP_MAIL_PRINTF("Message sent failed: %d\n", status.failedCount());
         Serial.println("----------------\n");
 
         for (size_t i = 0; i < smtp.sendingResult.size(); i++)
         {
             /* Get the result item */
             SMTP_Result result = smtp.sendingResult.getItem(i);
-            // ESP_MAIL_PRINTF("Message No: %d\n", i + 1);
-            // ESP_MAIL_PRINTF("Status: %s\n", result.completed ? "success" : "failed");
-            // ESP_MAIL_PRINTF("Date/Time: %s\n", MailClient.Time.getDateTimeString(result.timestamp, "%B %d, %Y %H:%M:%S").c_str());
-            // ESP_MAIL_PRINTF("Recipient: %s\n", result.recipients.c_str());
-            // ESP_MAIL_PRINTF("Subject: %s\n", result.subject.c_str());
         }
         Serial.println("----------------\n");
 
@@ -239,4 +240,108 @@ void fire_gesture(lv_event_t *e)
 void fire_timer_cb(lv_timer_t *timer)
 {
     show_number1();
+}
+
+
+void SetupTotallyRandomPalette()
+{
+    for( int i = 0; i < 16; i++) {
+        currentPalette[i] = CHSV( random8(), 255, random8());
+    }
+}
+
+void SetupBlackAndWhiteStripedPalette()
+{
+    fill_solid( currentPalette, 16, CRGB::Black);
+    currentPalette[0] = CRGB::White;
+    currentPalette[4] = CRGB::White;
+    currentPalette[8] = CRGB::White;
+    currentPalette[12] = CRGB::White;
+}
+
+void SetupPurpleAndGreenPalette()
+{
+    CRGB purple = CHSV( HUE_PURPLE, 255, 255);
+    CRGB green  = CHSV( HUE_GREEN, 255, 255);
+    CRGB black  = CRGB::Black;
+    
+    currentPalette = CRGBPalette16(
+                                   green,  green,  black,  black,
+                                   purple, purple, black,  black,
+                                   green,  green,  black,  black,
+                                   purple, purple, black,  black );
+}
+
+const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM =
+{
+    CRGB::Red,
+    CRGB::Gray, 
+    CRGB::Blue,
+    CRGB::Black,
+    
+    CRGB::Red,
+    CRGB::Gray,
+    CRGB::Blue,
+    CRGB::Black,
+    
+    CRGB::Red,
+    CRGB::Red,
+    CRGB::Gray,
+    CRGB::Gray,
+    CRGB::Blue,
+    CRGB::Blue,
+    CRGB::Black,
+    CRGB::Black
+};
+
+void FillLEDsFromPaletteColors( uint8_t colorIndex)
+{
+    uint8_t brightness = 255;
+    
+    for( int i = 0; i < NUM_LEDS; i++) {
+        leds[i] = ColorFromPalette( currentPalette, colorIndex, brightness, currentBlending);
+        colorIndex += 3;
+    }
+}
+
+void ChangePalettePeriodically()
+{
+    uint8_t secondHand = (millis() / 1000) % 60;
+    static uint8_t lastSecond = 99;
+    
+    if( lastSecond != secondHand) {
+        lastSecond = secondHand;
+        if( secondHand ==  0)  { currentPalette = RainbowColors_p;         currentBlending = LINEARBLEND; }
+        if( secondHand == 10)  { currentPalette = RainbowStripeColors_p;   currentBlending = NOBLEND;  }
+        if( secondHand == 15)  { currentPalette = RainbowStripeColors_p;   currentBlending = LINEARBLEND; }
+        if( secondHand == 20)  { SetupPurpleAndGreenPalette();             currentBlending = LINEARBLEND; }
+        if( secondHand == 25)  { SetupTotallyRandomPalette();              currentBlending = LINEARBLEND; }
+        if( secondHand == 30)  { SetupBlackAndWhiteStripedPalette();       currentBlending = NOBLEND; }
+        if( secondHand == 35)  { SetupBlackAndWhiteStripedPalette();       currentBlending = LINEARBLEND; }
+        if( secondHand == 40)  { currentPalette = CloudColors_p;           currentBlending = LINEARBLEND; }
+        if( secondHand == 45)  { currentPalette = PartyColors_p;           currentBlending = LINEARBLEND; }
+        if( secondHand == 50)  { currentPalette = myRedWhiteBluePalette_p; currentBlending = NOBLEND;  }
+        if( secondHand == 55)  { currentPalette = myRedWhiteBluePalette_p; currentBlending = LINEARBLEND; }
+    }
+}
+
+void SK6812Init() {
+    delay( 1000 ); 
+    FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
+    FastLED.setBrightness(  BRIGHTNESS );
+    currentPalette = RainbowColors_p;
+    currentBlending = LINEARBLEND;
+}
+
+
+void SK6812Loop()
+{
+    ChangePalettePeriodically();
+    static uint8_t startIndex = 0;
+    startIndex = startIndex + 1; 
+    
+    FillLEDsFromPaletteColors( startIndex);
+    
+    FastLED.show();
+    FastLED.delay(1000 / UPDATES_PER_SECOND);
 }

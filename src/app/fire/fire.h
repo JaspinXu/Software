@@ -1,6 +1,24 @@
 #pragma once
 
+#ifndef BRIGHTNESS  
+#define BRIGHTNESS  50
+#endif
+
+#ifndef LED_TYPE   
+#define LED_TYPE    SK6812
+#endif
+
+#ifndef COLOR_ORDER 
+#define COLOR_ORDER GRB
+#endif
+
+#ifndef UPDATES_PER_SECOND 
+#define UPDATES_PER_SECOND 100
+#endif
+
 #include "head.h"
+#include "common.h"
+#include <Arduino.h>
 #include <ESP_Mail_Client.h>
 #define SMTP_HOST "smtp.qq.com"
 
@@ -16,6 +34,14 @@ void smtp_init();
 void smtpCallback(SMTP_Status status);
 void fire_gesture(lv_event_t *e);
 void fire_timer_cb(lv_timer_t *timer);
+
+void SK6812Loop();
+void SK6812Init();
+void ChangePalettePeriodically();
+void FillLEDsFromPaletteColors( uint8_t colorIndex);
+void SetupPurpleAndGreenPalette();
+void SetupBlackAndWhiteStripedPalette();
+void SetupTotallyRandomPalette();
 
 
 

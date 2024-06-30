@@ -30,9 +30,7 @@ I2C_BM8563_TimeTypeDef alarmStruct = {13, 14, 0};
 WiFiClient computer_client;
 WiFiClient weather_client;
 WiFiClient advice_client;
-// const char *ssid = "JaspinXu";
-// const char *password = "xu20040716";
-const char *host = "172.25.149.70";
+const char *host = "192.168.43.163";
 int cpu_usage = 0;
 int gpu_tem = 0;
 int gpu_usage = 0;
@@ -1712,12 +1710,12 @@ void weather_init()
 {
     const size_t capacity = 2 * JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(6) + JSON_OBJECT_SIZE(14) + 390;
     const size_t capacity2 = 2 * JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(6) + JSON_OBJECT_SIZE(14) + 390;
-    String now_https = String("GET /v3/weather/now.json?key=SYQAZcQPIoDp3vOPG&location=qingdao&language=zh-Hans&unit=c&unit=c&start=-1&days=1") + " HTTP/1.1\r\n" + // 请求的是首页信息，HTTP版本号是1.1
+    String now_https = String("GET /v3/weather/now.json?key=S2OugJWPdzil-v8IN&location=qingdao&language=zh-Hans&unit=c&unit=c&start=-1&days=1") + " HTTP/1.1\r\n" + // 请求的是首页信息，HTTP版本号是1.1
                        "Host: " + "api.seniverse.com" + "\r\n" +                                                                                                    // 请求的网址信息
                        "Connection: close\r\n" +                                                                                                                    // 信息发送完毕后断开连接
                        "\r\n";
 
-    String highlow_https = String("GET /v3/weather/daily.json?key=SYQAZcQPIoDp3vOPG&location=qingdao&language=zh-Hans&unit=c&start=0&days=1") + " HTTP/1.1\r\n" + // 请求的是首页信息，HTTP版本号是1.1
+    String highlow_https = String("GET /v3/weather/daily.json?key=S2OugJWPdzil-v8IN&location=qingdao&language=zh-Hans&unit=c&start=0&days=1") + " HTTP/1.1\r\n" + // 请求的是首页信息，HTTP版本号是1.1
                            "Host: " + "api.seniverse.com" + "\r\n" +                                                                                              // 请求的网址信息
                            "Connection: close\r\n" +                                                                                                              // 信息发送完毕后断开连接
                            "\r\n";
@@ -2019,7 +2017,7 @@ lv_obj_t *home_config_load()
     lv_obj_set_pos(dlist_1, 73, 256);
     lv_obj_set_size(dlist_1, 249, 50);
     lv_obj_set_scrollbar_mode(dlist_1, LV_SCROLLBAR_MODE_OFF);
-    lv_dropdown_set_options(dlist_1, "Back in business\nSing\nBeautiful life");
+    lv_dropdown_set_options(dlist_1, "AHQ\nSilicon Dreams\nLa vaguelette");
     if (music_choose_flag == 0)
         lv_dropdown_set_selected(dlist_1, 0);
     if (music_choose_flag == 1)

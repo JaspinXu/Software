@@ -1,7 +1,6 @@
 #include "app/lunar/lunar.h"
 #include "app/fire/fire.h"
 #include "app/menu/setting.h"
-// #include "app/lunar/lunarCalender.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <math.h>
@@ -22,22 +21,21 @@ typedef struct
     uint8_t hour;
     uint8_t minute;
     uint8_t second;
-} Solar_t; // 公历
+} Solar_t; 
 
 typedef struct
 {
-    uint8_t has_leap_month; // 1 此年有闰月, 0 无
-    /* 如果有闰月下面2个才有意义 */
-    uint8_t leapWhichMonth;     // 此年闰月是哪个月份
-    uint8_t leapMonthis_30days; // 1 此年闰大月, 0 闰小月
+    uint8_t has_leap_month; 
+    uint8_t leapWhichMonth;    
+    uint8_t leapMonthis_30days; 
 
-    uint8_t month;         // 当前农历月份
-    uint8_t is_leap_month; // 1 当前农历月是闰月 0非闰月
-    uint8_t date;          // 当前农历日
-    uint8_t animal;        // 此农历年生肖 1 - 12 : 鼠 - 猪
-    uint8_t tian_gan;      // 1-10甲、乙、丙、丁、戊、己、庚、辛、壬、癸
-    uint8_t di_zhi;        // 1-12子、丑、寅、卯、辰、巳、午、未、申、酉、戌、亥
-} Lunar_t;                 // 农历
+    uint8_t month;   
+    uint8_t is_leap_month; 
+    uint8_t date;   
+    uint8_t animal;     
+    uint8_t tian_gan;  
+    uint8_t di_zhi;       
+} Lunar_t;          
 
 uint32_t LUNAR_INFO[] = {
     0x04bd8, 0x04ae0, 0x0a570, 0x054d5, 0x0d260, 0x0d950, 0x16554, 0x056a0, 0x09ad0, 0x055d2, // 1900-1909
@@ -63,46 +61,29 @@ uint32_t LUNAR_INFO[] = {
     0x0d520                                                                                   // 2100
 };
 
-/**
- * @brief  计算公历年份是闰还是平
- * @note
- * @param
- * @retval
- * @author PWH @ CSDN Tyrion.Mon
- * @date   2021/6
- */
+
 uint8_t IsLeapYear(uint16_t year)
 {
     if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)
-        return 1; // 是闰年
-    return 0;     // 是平年
+        return 1; 
+    return 0;  
 }
 
-/**
- * @brief  计算公历两个日期的间隔天数
- * @note   Solar2的年月日必须晚于Solar1或相等
- * @param
- * @retval
- * @author PWH @ CSDN Tyrion.Mon
- * @date   2021/6
- */
 uint32_t Calc_Solar_DateInterval(Solar_t *Solar1, Solar_t *Solar2)
 {
     int16_t i = 0;
     uint8_t MonthDays[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    uint32_t TotalDays1 = 0; // Solar1
-    uint32_t TotalDays2 = 0; // Solar2
-    uint32_t TotalDays = 0;  // 记录间隔总天数
+    uint32_t TotalDays1 = 0;
+    uint32_t TotalDays2 = 0; 
+    uint32_t TotalDays = 0; 
 
-    /* 计算从Solar1->year 1月1日到Solar1->month Solar2->date的总天数 */
     MonthDays[1] = (IsLeapYear(Solar1->year) ? 29 : 28);
     for (i = 1; i < Solar1->month; i++)
     {
-        TotalDays1 += MonthDays[i - 1]; // 累计1月到month-1月的天数
+        TotalDays1 += MonthDays[i - 1]; 
     }
-    TotalDays1 += Solar1->date; // 最后加上month月已达天数，和值即为本年1月1日到输入日期的天数
+    TotalDays1 += Solar1->date; 
 
-    /* 计算从Solar2->year 1月1日到Solar2->month Solar2->date的总天数 */
     MonthDays[1] = (IsLeapYear(Solar2->year) ? 29 : 28);
     for (i = 1; i < Solar2->month; i++)
     {
@@ -110,69 +91,44 @@ uint32_t Calc_Solar_DateInterval(Solar_t *Solar1, Solar_t *Solar2)
     }
     TotalDays2 += Solar2->date;
 
-    /* 如果为同一年 */
     if (Solar1->year == Solar2->year)
     {
         TotalDays = TotalDays2 - TotalDays1;
     }
     else
     {
-        /* 计算两个年份之间的年份的总天数 */
         for (i = Solar1->year + 1; i < Solar2->year; i++)
         {
             TotalDays += (IsLeapYear(i) ? 366 : 365);
         }
-        /* Solar1->year剩余天数 + 两年之间年份总天数 + Solar2->year已过天数 */
         TotalDays += ((IsLeapYear(Solar1->year) ? 366 : 365) - TotalDays1 + TotalDays2);
     }
-    // printf("TotalDays = %d\r\n", TotalDays);
     return TotalDays;
 }
 
-/**
- * @brief  计算此农历年是否有闰月
- * @note
- * @param
- * @retval -1 输入错误
- *         0 无闰月
- *         1 有闰月
- * @author PWH @ CSDN Tyrion.Mon
- * @date   2021/6
- */
 int8_t Calc_thisLunarYear_HasLeapMonth(uint16_t SolarYear, Lunar_t *Lunar)
 {
     if (SolarYear < 1900 || SolarYear > 2100)
         return -1;
 
-    /* 为 0 或者大于12， 无闰月 */
     if ((LUNAR_INFO[SolarYear - 1900] & 0x0000000f) == 0 || (LUNAR_INFO[SolarYear - 1900] & 0x0000000f) > 12)
     {
         Lunar->has_leap_month = 0;
         return 0;
     }
-    /* 存在闰月 */
     Lunar->has_leap_month = 1;
-    Lunar->leapWhichMonth = LUNAR_INFO[SolarYear - 1900] & 0x0000000f;             // bit3-bit0 该年闰月月份
-    Lunar->leapMonthis_30days = (LUNAR_INFO[SolarYear - 1900] >> 16) & 0x00000001; // bit16 闰月为大还是小 1大0小
+    Lunar->leapWhichMonth = LUNAR_INFO[SolarYear - 1900] & 0x0000000f;          
+    Lunar->leapMonthis_30days = (LUNAR_INFO[SolarYear - 1900] >> 16) & 0x00000001;
 
     return 1;
 }
-/**
- * @brief  计算此年农历月（非闰月）的天数
- * @note
- * @param
- * @retval -1 输入错误
- *         正确值为29或30
- * @author PWH @ CSDN Tyrion.Mon
- * @date   2021/6
- */
+
 int8_t Calc_thisLunarMonth_Days(uint16_t SolarYear, uint8_t LunarMonth)
 {
     if (SolarYear < 1900 || SolarYear > 2100)
         return -1;
     if (LunarMonth < 1 || LunarMonth > 12)
         return -1;
-    /* 农历1月bit15， 2月bit14，12月bit4 */
     if ((LUNAR_INFO[SolarYear - 1900] >> ((12 - LunarMonth) + 4)) & 0x00000001)
     {
         return 30;
@@ -182,14 +138,7 @@ int8_t Calc_thisLunarMonth_Days(uint16_t SolarYear, uint8_t LunarMonth)
         return 29;
     }
 }
-/**
- * @brief  根据间隔天数计算农历月日
- * @note   1900/1/31为正月初一，鼠年，以此为起点
- * @param
- * @retval
- * @author PWH @ CSDN Tyrion.Mon
- * @date   2021/6
- */
+
 int8_t Calc_Lunar_From_DateInterval(uint32_t DateInterval, Lunar_t *LU)
 {
     uint16_t SolarYear = 1900;
@@ -199,34 +148,28 @@ int8_t Calc_Lunar_From_DateInterval(uint32_t DateInterval, Lunar_t *LU)
     LU->has_leap_month = 0;
     LU->leapWhichMonth = 0;
     LU->leapMonthis_30days = 0;
-    LU->is_leap_month = 0; // 1900农历1月非闰月
-    LU->month = 1;         // 1900正月初一始
+    LU->is_leap_month = 0; 
+    LU->month = 1;   
     LU->date = 1;
-    LU->animal = 1;          // 鼠
-    LU->tian_gan = 7;        // 庚
-    LU->di_zhi = LU->animal; // 子
+    LU->animal = 1;     
+    LU->tian_gan = 7;    
+    LU->di_zhi = LU->animal; 
 
     while (1)
     {
-        /* 查询此年是否存在闰月，闰月为闰几月，闰大月还是闰小月 */
         err = Calc_thisLunarYear_HasLeapMonth(SolarYear, LU);
         if (err == -1)
-            return -1; // 输入参数有误
-
-        /* 如果当前月为闰月 */
+            return -1; 
         if (LU->is_leap_month == 1)
         {
-            /* 为大月，则加30日，否则29日 */
             DI_temp += LU->leapMonthis_30days ? 30 : 29;
         }
-        else /* 当前月非闰月 */
-        {    /* 查询非闰月月份的天数 */
+        else 
+        {   
             DI_temp += Calc_thisLunarMonth_Days(SolarYear, LU->month);
         }
-        /* 总天数已达, 当前月即是目标农历月 */
         if (DI_temp >= DateInterval)
         {
-            /* 如果当前月为闰月 */
             if (LU->is_leap_month == 1)
             {
                 LU->date = (LU->leapMonthis_30days ? 30 : 29) - (DI_temp - DateInterval);
@@ -238,30 +181,23 @@ int8_t Calc_Lunar_From_DateInterval(uint32_t DateInterval, Lunar_t *LU)
             return 1;
         }
 
-        /* 未达 */
-
-        /* 此年有闰月 并且今年未到过闰月 */
         if ((LU->has_leap_month == 1) && (LU->is_leap_month == 0))
         {
-            /* 如果此年闰月月份和当前月一样, 此时应该在当前月和下一个月之间插入一个闰月 */
-            /* 因为上面的步骤已累加了闰月前一个月份的天数，所以直接跳到闰月，并标记当前月为闰月 */
+
             if (LU->leapWhichMonth == LU->month)
             {
-                LU->is_leap_month = 1; // 标记现在是闰月,如果当前月是5月,匹配上了,那这个闰月就是闰5月
-                // printf("SolarYear %d LEAP MONTH is %d\r\n", SolarYear, LU->leapWhichMonth);
+                LU->is_leap_month = 1;
             }
             else
             {
                 LU->month += 1;
             }
         }
-        /* 此年有闰月且今个月为闰月   或者 此年无闰月 */
         else if (((LU->has_leap_month == 1) && (LU->is_leap_month == 1)) || (LU->has_leap_month == 0))
         {
-            LU->is_leap_month = 0; // 闰月下一个月为非闰月
+            LU->is_leap_month = 0;
             LU->month += 1;
         }
-        /* 溢出处理， 生肖， 天干地支 */
         if (LU->month > 12)
         {
             if (++SolarYear > 2100)
@@ -280,49 +216,21 @@ int8_t Calc_Lunar_From_DateInterval(uint32_t DateInterval, Lunar_t *LU)
     }
 }
 
-/**
- * @brief  公历年月日转农历月日
- * @note
- * @param
- * @retval
- * @author PWH @ CSDN Tyrion.Mon
- * @date   2021/6
- */
 int8_t Solar2Lunar(Solar_t *so, Lunar_t *lu)
 {
     Solar_t solar_1900;
-
-    /* 1900/1/31为正月初一，鼠年，以此为起点 */
-    solar_1900.year = 1900; /* 不 */
-    solar_1900.month = 1;   /* 要 */
-    solar_1900.date = 31;   /* 改 */
+    solar_1900.year = 1900; 
+    solar_1900.month = 1;  
+    solar_1900.date = 31; 
     return Calc_Lunar_From_DateInterval(Calc_Solar_DateInterval(&solar_1900, so) + 1, lu);
 }
 
-/**
- * @brief  计算某个公历年的24节气对应日期
- * @note    2月 立春 雨水
- *          3月 惊蛰 春分
- *          4月 清明 谷雨
- *          5月 立夏 小满
- *          6月 芒种 夏至
- *          7月 小暑 大暑
- *          9月 白露 秋分
- *         10月 寒露 霜降
- *         11月 立冬 小雪
- *         12月 大雪 冬至
- *          1月 小寒 大寒
- * @param
- * @retval
- * @author PWH @ CSDN Tyrion.Mon
- * @date   2021/6
- */
 int8_t Calc_24SolarTerms(uint16_t SolarYear, uint8_t *Array_24SolarTermDate)
 {
     uint8_t i = 0;
-    uint8_t Y = SolarYear % 100; // 年份后两位
+    uint8_t Y = SolarYear % 100; 
     double D = 0.2422;
-    double C_20xx[] = // 21世纪24个节气的C值
+    double C_20xx[] =
         {
             3.87, 18.73, 5.63, 20.646, 4.81, 20.1,
             5.52, 21.04, 5.678, 21.37, 7.108, 22.83,
@@ -338,58 +246,57 @@ int8_t Calc_24SolarTerms(uint16_t SolarYear, uint8_t *Array_24SolarTermDate)
             Array_24SolarTermDate[i] = ((uint16_t)(Y * D + C_20xx[i])) - ((Y - 1) / 4);
         else
             Array_24SolarTermDate[i] = ((uint16_t)(Y * D + C_20xx[i])) - (Y / 4);
-        /* 例外 */
         if (SolarYear == 2026 && i == 1)
         {
-            Array_24SolarTermDate[i] -= 1; // 例外：2026年计算得出的雨水日期应调减一天为18日。
+            Array_24SolarTermDate[i] -= 1; 
         }
         else if (SolarYear == 2084 && i == 3)
         {
-            Array_24SolarTermDate[i] += 1; // 例外：2084年的计算结果加1日。
+            Array_24SolarTermDate[i] += 1;
         }
         else if (SolarYear == 1911 && i == 6)
         {
-            Array_24SolarTermDate[i] += 1; // 例外：1911年的计算结果加1日
+            Array_24SolarTermDate[i] += 1;
         }
         else if (SolarYear == 2008 && i == 7)
         {
-            Array_24SolarTermDate[i] += 1; // 例外：2008年的计算结果加1日
+            Array_24SolarTermDate[i] += 1;
         }
         else if (SolarYear == 1902 && i == 8)
         {
-            Array_24SolarTermDate[i] += 1; // 例外：1902年的计算结果加1日
+            Array_24SolarTermDate[i] += 1; 
         }
         else if (SolarYear == 1928 && i == 9)
         {
-            Array_24SolarTermDate[i] += 1; // 例外：1928年的计算结果加1日。
+            Array_24SolarTermDate[i] += 1; 
         }
         else if ((SolarYear == 1925 || SolarYear == 2016) && i == 10)
         {
-            Array_24SolarTermDate[i] += 1; // 例外：1925年和2016年的计算结果加1日。
+            Array_24SolarTermDate[i] += 1; 
         }
         else if (SolarYear == 1922 && i == 11)
         {
-            Array_24SolarTermDate[i] += 1; // 例外：1922年的计算结果加1日。
+            Array_24SolarTermDate[i] += 1; 
         }
         else if (SolarYear == 2002 && i == 12)
         {
-            Array_24SolarTermDate[i] += 1; // 例外：2002年的计算结果加1日。
+            Array_24SolarTermDate[i] += 1; 
         }
         else if (SolarYear == 1927 && i == 14)
         {
-            Array_24SolarTermDate[i] += 1; // 例外：1927年的计算结果加1日。
+            Array_24SolarTermDate[i] += 1; 
         }
         else if (SolarYear == 1942 && i == 15)
         {
-            Array_24SolarTermDate[i] += 1; // 例外：1942年的计算结果加1日。
+            Array_24SolarTermDate[i] += 1; 
         }
         else if (SolarYear == 2089 && i == 17)
         {
-            Array_24SolarTermDate[i] += 1; // 例外：2089年的计算结果加1日。
+            Array_24SolarTermDate[i] += 1; 
         }
         else if (SolarYear == 2089 && i == 18)
         {
-            Array_24SolarTermDate[i] += 1; // 例外：2089年的计算结果加1日。
+            Array_24SolarTermDate[i] += 1;
         }
         else if (SolarYear == 1978 && i == 19)
         {
@@ -442,8 +349,6 @@ char solarTerms[11][2][8] = {
     {"立冬", "小雪"},
     {"大雪", "冬至"},
     {"小寒", "大寒"}};
-// Solar_t solar_1 = {2023, 6, 28};
-// Lunar_t Lunar_1;
 
 void lunar_timer_cb(lv_timer_t *timer)
 {
@@ -460,19 +365,7 @@ void lunar_timer_cb(lv_timer_t *timer)
         uint8_t month;    // 当前农历月份
         uint8_t date;     // 当前农历日
         uint8_t tian_gan; // 1-10甲、乙、丙、丁、戊、己、庚、辛、壬、癸
-        uint8_t di_zhi;   // 1-12子、丑、寅、卯、辰、巳、午、未、申、酉、戌、亥
-        // Serial.println("天干地支：");
-        // Serial.println(tiangan[Lunar_1.tian_gan - 1]);
-        // Serial.println(dizhi[Lunar_1.di_zhi - 1]);
-        // Serial.println("月日");
-        // Serial.println(lunar_mon[Lunar_1.month - 1]);
-        // Serial.println(lunar_day[Lunar_1.date - 1]);
-        // Serial.println("节气：");
-        // Serial.println(Array_24SoTermDate[(solar_1.month - 2) * 2 + 0]);
-        // // 此处注意判断限制范围
-        // Serial.println(solarTerms[solar_1.month - 2][0]);
-        // Serial.println(Array_24SoTermDate[(solar_1.month - 2) * 2 + 1]);
-        // Serial.println(solarTerms[solar_1.month - 2][1]);
+        uint8_t di_zhi;   
         if (lunar->lunar_year != NULL)
         {
 
@@ -524,7 +417,6 @@ lv_obj_t *lunar_load()
 {
     // Write codes label_4
     now_screen = lv_obj_create(NULL);
-    // advice_init();
 
     rtc.getDate(&dateStruct);
     solar_1 = {dateStruct.year, dateStruct.month, dateStruct.date, 0};
@@ -605,29 +497,27 @@ lv_obj_t *lunar_load()
     if (Lunar_1.animal == 1)
         lv_img_set_src(now_screen_img_1, &_mouse_alpha_197x264);
     else if (Lunar_1.animal == 2)
-        lv_img_set_src(now_screen_img_1, &_bull_alpha_197x264);
+        lv_img_set_src(now_screen_img_1, &_ox_alpha_197x264);
     else if (Lunar_1.animal == 3)
         lv_img_set_src(now_screen_img_1, &_tiger_alpha_197x264);
-    // else if (Lunar_1.animal == 4)
-    //     lv_img_set_src(now_screen_img_1, &_rabbit_alpha_197x264);
-    // // else if (Lunar_1.animal == 5)
-    // //     lv_img_set_src(now_screen_img_1, &_rabbit_alpha_197x264);
-    // else if (Lunar_1.animal == 6)
-    //     lv_img_set_src(now_screen_img_1, &_snake_alpha_197x264);
-    // else if (Lunar_1.animal == 7)
-    //     lv_img_set_src(now_screen_img_1, &_hourse_alpha_197x264);
-    // else if (Lunar_1.animal == 8)
-    //     lv_img_set_src(now_screen_img_1, &_sheep_alpha_197x264);
-    // else if (Lunar_1.animal == 9)
-    // lv_img_set_src(now_screen_img_1, &_monkey_alpha_197x264);
-    else
+    else if (Lunar_1.animal == 4)
         lv_img_set_src(now_screen_img_1, &_rabbit_alpha_197x264);
-    // else if (Lunar_1.animal == 10)
-    //     lv_img_set_src(now_screen_img_1, &_chicken_alpha_197x264);
-    // else if (Lunar_1.animal == 11)
-    //     lv_img_set_src(now_screen_img_1, &_dog_alpha_197x264);
-    // else if (Lunar_1.animal == 12)
-    //     lv_img_set_src(now_screen_img_1, &_pig_alpha_197x264);
+    else if (Lunar_1.animal == 12)
+        lv_img_set_src(now_screen_img_1, &_pig_alpha_197x264);
+    else if (Lunar_1.animal == 6)
+        lv_img_set_src(now_screen_img_1, &_snake_alpha_197x264);
+    else if (Lunar_1.animal == 7)
+        lv_img_set_src(now_screen_img_1, &_horse_alpha_197x264);
+    else if (Lunar_1.animal == 8)
+        lv_img_set_src(now_screen_img_1, &_sheep_alpha_197x264);
+    else if (Lunar_1.animal == 9)
+        lv_img_set_src(now_screen_img_1, &_monkey_alpha_197x264);
+    else if (Lunar_1.animal == 10)
+        lv_img_set_src(now_screen_img_1, &_rooster_alpha_197x264);
+    else if (Lunar_1.animal == 11)
+        lv_img_set_src(now_screen_img_1, &_dog_alpha_197x264);
+    else 
+        lv_img_set_src(now_screen_img_1, &_loong_alpha_197x264);
 
     lv_img_set_pivot(now_screen_img_1, 50, 50);
     lv_img_set_angle(now_screen_img_1, 0);
@@ -637,7 +527,6 @@ lv_obj_t *lunar_load()
     lv_obj_set_pos(now_screen_label_3, 258, 141);
     lv_obj_set_size(now_screen_label_3, 235, 38);
     lv_obj_set_scrollbar_mode(now_screen_label_3, LV_SCROLLBAR_MODE_OFF);
-    // lv_label_set_text(now_screen_label_3, "\n");
     lv_label_set_text_fmt(now_screen_label_3, "%s:%s", "宜", "出行 解除 移徙 入宅 开市");
     lv_label_set_long_mode(now_screen_label_3, LV_LABEL_LONG_SCROLL_CIRCULAR);
 
@@ -752,7 +641,6 @@ lv_obj_t *lunar_load()
     lv_obj_set_style_pad_right(now_screen_label_6, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(now_screen_label_6, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_bottom(now_screen_label_6, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    // gesture(0, 1, 0, 1);
 
     lv_obj_add_event_cb(now_screen, gesture_lunar, LV_EVENT_GESTURE, NULL);
 
@@ -762,7 +650,6 @@ lv_obj_t *lunar_load()
 
     advice_timer = lv_timer_create(advice_cb, 60000, now_screen_label_4);
     
-    // gesture(0, 1, 0, 1);
     return now_screen;
 }
 
@@ -815,20 +702,11 @@ void advice_init()
                 DynamicJsonDocument doc(capacity);
                 deserializeJson(doc, line);
                 JsonObject results_0_suggestion_0 = doc["results"][0]["suggestion"][0];
-                // String results_0_suggestion_0_date = results_0_suggestion_0["date"].as<String>(); // "2023-06-30"
-
-                // const char *results_0_suggestion_0_ac_brief = results_0_suggestion_0["ac"]["brief"];     // "部分时间开启"
-                // const char *results_0_suggestion_0_ac_details = results_0_suggestion_0["ac"]["details"]; // "天气有点热，由于湿度很大，您将会感到有些闷热，因此建议在午后较热的时候开启制冷空调。"
-
-                // const char *results_0_suggestion_0_comfort_brief = results_0_suggestion_0["comfort"]["brief"];     // "较舒适"
-                // const char *results_0_suggestion_0_comfort_details = results_0_suggestion_0["comfort"]["details"]; // "白天天气晴好，同时较大的空气湿度，会使您在午后略感闷热，但早晚仍很凉爽、舒适。"
 
                 results_0_suggestion_0_dressing_brief = results_0_suggestion_0["dressing"]["brief"].as<String>();     // "热"
                 results_0_suggestion_0_dressing_details = results_0_suggestion_0["dressing"]["details"].as<String>(); // "天气热，建议着短裙、短裤、短薄外套、T恤等夏季服装。"
                 Serial.println(results_0_suggestion_0_dressing_brief);
                 Serial.println(results_0_suggestion_0_dressing_details);
-                // const char *results_0_suggestion_0_mood_brief = results_0_suggestion_0["mood"]["brief"];     // "差"
-                // const char *results_0_suggestion_0_mood_details = results_0_suggestion_0["mood"]["details"]; // "有较强降水，会让人心情不佳，注意自我调节。"
             }
         }
         advice_client.stop();
@@ -840,7 +718,6 @@ void advice_cb(lv_timer_t *timer)
     advice_init();
     if (timer != NULL && timer->user_data != NULL)
     {
-        // lv_label_set_text_fmt(now_screen_label_4, "%s:%s", results_0_suggestion_0_dressing_brief, results_0_suggestion_0_dressing_details);
         lv_label_set_text_fmt(now_screen_label_4, "%s:%s", "热", "天气热，建议着短裙、短裤、短薄外套、T恤等夏季服装。");
         lv_label_set_text_fmt(now_screen_label_3, "%s:%s", "宜", "出行 解除 移徙 入宅 开市");
     }

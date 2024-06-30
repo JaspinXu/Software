@@ -1,23 +1,23 @@
 #include "music.h"
 double music_alarmFlag = 0;
 lv_timer_t *music_alarm_timer;
-void SendData(char addr) // 发送函数。
-{
 
-    digitalWrite(music_pin, HIGH); /*开始拉高*/
+void SendData(char addr) 
+{
+    digitalWrite(music_pin, HIGH); 
     delayMicroseconds(1000);
-    digitalWrite(music_pin, LOW); /*开始引导码*/
-    delayMicroseconds(3200);      /*此处延时最少要大于2ms*/
-    for (int i = 0; i < 8; i++)   /*总共8位数据  */
+    digitalWrite(music_pin, LOW); 
+    delayMicroseconds(3200);   
+    for (int i = 0; i < 8; i++)  
     {
         digitalWrite(music_pin, HIGH);
-        if (addr & 0x01) /*3:1表示数据位1,每个位用两个脉冲表示  */
+        if (addr & 0x01) 
         {
             delayMicroseconds(600);
             digitalWrite(music_pin, LOW);
             delayMicroseconds(200);
         }
-        else /*1：3表示数据位0 ,每个位用两个脉冲表示  */
+        else 
         {
             delayMicroseconds(200);
             digitalWrite(music_pin, LOW);
@@ -30,60 +30,42 @@ void SendData(char addr) // 发送函数。
 
 void show_number1()
 {
-    // 设置音量为20
-    SendData(0x0a); // 清空数字
-    SendData(0x09); // 音量20
+    SendData(0x0a); 
+    SendData(0x09); 
     SendData(0x00);
-    SendData(0x0c); // 设置音量
-    delay(10);      // 延时
+    SendData(0x0c); 
+    delay(10);   
 
-    // 选取曲目1播放
-    SendData(0x0a); // 清空数字
-    SendData(0x01); // 曲目数字，对应00001.mp3
-    SendData(0x0b); // 选曲播放
-    // delay(2000);
-
-    // 开始播放
-    // SendData(0x11);//开始播放
-    // delay(2000);
+    SendData(0x0a); 
+    SendData(0x01); 
+    SendData(0x0b); 
 }
 
 void show_number2()
 {
-    // 设置音量为20
-    SendData(0x0a); // 清空数字
-    SendData(0x09); // 音量20
+    SendData(0x0a); 
+    SendData(0x09); 
     SendData(0x00);
-    SendData(0x0c); // 设置音量
-    delay(10);      // 延时
+    SendData(0x0c); 
+    delay(10);     
 
-    // 选取曲目2播放
-    SendData(0x0a); // 清空数字
-    SendData(0x02); // 曲目数字，对应00002.mp3
-    SendData(0x0b); // 选曲播放
 
-    // 开始播放
-    // SendData(0x11);//开始播放,这部分可以没有
-    // delay(2000);
+    SendData(0x0a); 
+    SendData(0x02); 
+    SendData(0x0b); 
 }
 
 void show_number3()
 {
-    // 设置音量为20
-    SendData(0x0a); // 清空数字
-    SendData(0x09); // 音量20
+    SendData(0x0a); 
+    SendData(0x09); 
     SendData(0x00);
-    SendData(0x0c); // 设置音量
-    delay(10);      // 延时
+    SendData(0x0c); 
+    delay(10);     
 
-    // 选取曲目2播放
-    SendData(0x0a); // 清空数字
-    SendData(0x03); // 曲目数字，对应00002.mp3
-    SendData(0x0b); // 选曲播放
-
-    // 开始播放
-    // SendData(0x11);//开始播放,这部分可以没有
-    // delay(2000);
+    SendData(0x0a); 
+    SendData(0x03); 
+    SendData(0x0b); 
 }
 
 static lv_obj_t *g_kb_screen;
@@ -96,25 +78,6 @@ static void kb_screen_event_cb(lv_event_t *e)
         lv_obj_add_flag(kb, LV_OBJ_FLAG_HIDDEN);
     }
 }
-// static void ta_screen_event_cb(lv_event_t *e)
-// {
-
-// 	lv_event_code_t code = lv_event_get_code(e);
-// 	lv_obj_t *ta = lv_event_get_target(e);
-// 	lv_obj_t *kb = lv_event_get_user_data(e);
-// 	if (code == LV_EVENT_FOCUSED || code == LV_EVENT_CLICKED)
-// 	{
-// 		lv_keyboard_set_textarea(kb, ta);
-// 		lv_obj_move_foreground(kb);
-// 		lv_obj_clear_flag(kb, LV_OBJ_FLAG_HIDDEN);
-// 	}
-// 	if (code == LV_EVENT_CANCEL || code == LV_EVENT_DEFOCUSED)
-// 	{
-// 		lv_keyboard_set_textarea(kb, NULL);
-// 		lv_obj_move_background(kb);
-// 		lv_obj_add_flag(kb, LV_OBJ_FLAG_HIDDEN);
-// 	}
-// }
 
 lv_obj_t *alarm_load()
 {

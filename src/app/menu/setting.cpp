@@ -1,3 +1,11 @@
+/*
+ * @Author: JaspinXu sea.xuo@gmail.com
+ * @Date: 2024-05-04 10:32:54
+ * @LastEditors: JaspinXu sea.xuo@gmail.com
+ * @LastEditTime: 2024-06-30 16:34:57
+ * @FilePath: \Software\src\app\menu\setting.cpp
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 #include "setting.h"
 #define screenWidth 480
 #define screenHeight 320
@@ -15,13 +23,6 @@ enum
     ABOUT_B,
 };
 
-// void setting_btn_event(lv_event_t *event)
-// {
-//     setting_scroll_d = lv_obj_get_scroll_y(now_screen);
-//     load app_load = (load)lv_event_get_user_data(event);
-//     if (app_load != NULL)
-//         app_open(app_load, LV_SCR_LOAD_ANIM_MOVE_LEFT, 200, 10);
-// }
 void setting_back_task()
 {
     setting_scroll_d = 0;
@@ -32,16 +33,8 @@ lv_obj_t *setting_load()
     now_screen = lv_obj_create(NULL);
     lv_color_t main_color;
     lv_color_t text_color;
-    // if (Theme_color == Theme_color_WHITE)
-    // {
-        main_color = lv_color_hex(0xeeeeee);
-        text_color = lv_color_hex(0x000000);
-    // }
-    // else if (Theme_color == Theme_color_BLACK)
-    // {
-    //     main_color = lv_color_hex(0x000000);
-    //     text_color = lv_color_hex(0xeeeeee);
-    // }
+    main_color = lv_color_hex(0xeeeeee);
+    text_color = lv_color_hex(0x000000);
     lv_obj_set_style_bg_color(now_screen, main_color, LV_STATE_DEFAULT);
     lv_obj_set_size(now_screen, screenWidth, screenHeight);
 
@@ -92,26 +85,14 @@ lv_obj_t *setting_load()
     lv_obj_set_style_bg_color(update_btn, main_color, LV_PART_MAIN);
     lv_obj_set_style_bg_color(about_btn, main_color, LV_PART_MAIN);
 
-    // if (Theme_color == Theme_color_WHITE)
-    // {
-        lv_obj_set_style_bg_color(wifi_btn, lv_color_make(28, 187, 255), LV_STATE_PRESSED);
-        lv_obj_set_style_bg_color(wifiAP_btn, lv_color_make(28, 187, 255), LV_STATE_PRESSED);
-        lv_obj_set_style_bg_color(blue_btn, lv_color_make(28, 187, 255), LV_STATE_PRESSED);
-        lv_obj_set_style_bg_color(theme_btn, lv_color_make(28, 187, 255), LV_STATE_PRESSED);
-        lv_obj_set_style_bg_color(safe_btn, lv_color_make(28, 187, 255), LV_STATE_PRESSED);
-        lv_obj_set_style_bg_color(update_btn, lv_color_make(28, 187, 255), LV_STATE_PRESSED);
-        lv_obj_set_style_bg_color(about_btn, lv_color_make(28, 187, 255), LV_STATE_PRESSED);
-    // }
-    // else if (Theme_color == Theme_color_BLACK)
-    // {
-        // lv_obj_set_style_bg_color(wifi_btn, lv_color_make(23, 186, 255), LV_STATE_PRESSED);
-        // lv_obj_set_style_bg_color(wifiAP_btn, lv_color_make(23, 186, 255), LV_STATE_PRESSED);
-        // lv_obj_set_style_bg_color(blue_btn, lv_color_make(23, 186, 255), LV_STATE_PRESSED);
-        // lv_obj_set_style_bg_color(theme_btn, lv_color_make(23, 186, 255), LV_STATE_PRESSED);
-        // lv_obj_set_style_bg_color(safe_btn, lv_color_make(23, 186, 255), LV_STATE_PRESSED);
-        // lv_obj_set_style_bg_color(update_btn, lv_color_make(23, 186, 255), LV_STATE_PRESSED);
-        // lv_obj_set_style_bg_color(about_btn, lv_color_make(23, 186, 255), LV_STATE_PRESSED);
-    // }
+    lv_obj_set_style_bg_color(wifi_btn, lv_color_make(28, 187, 255), LV_STATE_PRESSED);
+    lv_obj_set_style_bg_color(wifiAP_btn, lv_color_make(28, 187, 255), LV_STATE_PRESSED);
+    lv_obj_set_style_bg_color(blue_btn, lv_color_make(28, 187, 255), LV_STATE_PRESSED);
+    lv_obj_set_style_bg_color(theme_btn, lv_color_make(28, 187, 255), LV_STATE_PRESSED);
+    lv_obj_set_style_bg_color(safe_btn, lv_color_make(28, 187, 255), LV_STATE_PRESSED);
+    lv_obj_set_style_bg_color(update_btn, lv_color_make(28, 187, 255), LV_STATE_PRESSED);
+    lv_obj_set_style_bg_color(about_btn, lv_color_make(28, 187, 255), LV_STATE_PRESSED);
+
     lv_obj_set_style_shadow_width(wifi_btn, 0, LV_PART_MAIN);
     lv_obj_set_style_shadow_width(wifiAP_btn, 0, LV_PART_MAIN);
     lv_obj_set_style_shadow_width(blue_btn, 0, LV_PART_MAIN);
@@ -174,11 +155,8 @@ lv_obj_t *setting_load()
     lv_obj_align(update_text, LV_ALIGN_LEFT_MID, 30, 5);
     lv_obj_align(about_text, LV_ALIGN_LEFT_MID, 30, 5);
 
-    // if (WiFi.status() == WL_CONNECTED)
-    //     lv_label_set_text(wifi_text, WiFi.SSID().c_str());
-    // else
-        lv_label_set_text(wifi_text, "WiFi");
-    lv_label_set_text(wifiAP_text, "WiFi热点");
+    lv_label_set_text(wifi_text, "WiFi");
+    lv_label_set_text(wifiAP_text, "个人热点");
     lv_label_set_text(blue_text, "蓝牙");
     lv_label_set_text(theme_text, "主题");
     lv_label_set_text(safe_text, "锁屏");
@@ -207,14 +185,6 @@ lv_obj_t *setting_load()
     lv_obj_align_to(about_btn, update_btn, LV_ALIGN_TOP_MID, 0, 50);
 
     lv_obj_align_to(bottom, about_btn, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
-
-    // lv_obj_add_event_cb(wifi_btn, setting_btn_event, LV_EVENT_CLICKED, (void *)setting_wifi_load);
-    // lv_obj_add_event_cb(wifiAP_btn, setting_btn_event, LV_EVENT_CLICKED, (void *)setting_wifiAP_load);
-    // lv_obj_add_event_cb(blue_btn, setting_btn_event, LV_EVENT_CLICKED, NULL);
-    // lv_obj_add_event_cb(theme_btn, setting_btn_event, LV_EVENT_CLICKED, (void *)setting_theme_load);
-    // lv_obj_add_event_cb(safe_btn, setting_btn_event, LV_EVENT_CLICKED, (void *)setting_lock_load);
-    // lv_obj_add_event_cb(update_btn, setting_btn_event, LV_EVENT_CLICKED, NULL);
-    // lv_obj_add_event_cb(about_btn, setting_btn_event, LV_EVENT_CLICKED, (void *)about_load);
 
     lv_obj_scroll_to_y(now_screen, setting_scroll_d, LV_ANIM_OFF);
     gesture(0, 1, 1, 1);

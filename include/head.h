@@ -28,9 +28,6 @@
 #endif
 
 #include "demos/lv_demos.h"
-#include "study/myLVGL.h"
-#include "study/wifiscan.h"
-#include "study/weather.h"
 #include "pins_arduino.h"
 #include <Arduino.h>
 #include <ETH.h>

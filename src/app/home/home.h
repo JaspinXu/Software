@@ -3,14 +3,11 @@
 #include "head.h"
 #include <Arduino.h>
 #include "driver/lv_port_indev.h"
-#include "../../study/myLVGL.h"
 #include "lvgl.h"
 #include "examples/lv_examples.h"
 #include "demos/lv_demos.h"
 #include <DHT.h>
 #include <DHT_U.h>
-#include "../../study/weather.h"
-#include "../../study/wifiscan.h"
 #include "I2C_BM8563.h"
 #include <WiFi.h>
 #include "ArduinoJson.h"
