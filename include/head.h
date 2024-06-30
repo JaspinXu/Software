@@ -28,7 +28,6 @@
 #endif
 
 #include "demos/lv_demos.h"
-#include "study/myTest.h"
 #include "study/myLVGL.h"
 #include "study/wifiscan.h"
 #include "study/weather.h"

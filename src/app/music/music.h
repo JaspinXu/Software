@@ -3,8 +3,7 @@
 
 #include "head.h"
 
-#ifndef music_pin
-#define music_pin 12
+#ifndef music_pin 12
 #endif
 
 #ifdef __cplusplus

@@ -567,7 +567,7 @@
 
 // void demo10()
 // {
-//     WiFi.begin("vivoS12", "7bsgbsg7"); // Or, Connect to the specified access point
+//     WiFi.begin("JaspinXu", "xu20040716"); // Or, Connect to the specified access point
 
 //     Serial.print("Connecting to Wi-Fi ");
 //     while (WiFi.status() != WL_CONNECTED)

@@ -8,8 +8,11 @@
 // For ST7735, ST7789 and ILI9341 ONLY, define the colour order IF the blue and red are swapped on your display
 // Try ONE option at a time to find the correct colour order for your display
 
-#define TFT_RGB_ORDER TFT_RGB  // Colour order Red-Green-Blue
-//  #define TFT_RGB_ORDER TFT_BGR  // Colour order Blue-Green-Red
+//#define TFT_RGB_ORDER TFT_RGB  // Colour order Red-Green-Blue
+#define TFT_RGB_ORDER TFT_BGR  // Colour order Blue-Green-Red
+
+//#define TFT_INVERSION_ON
+#define TFT_INVERSION_OFF
 
 #define TFT_WIDTH  320 //一开始用的240*320的屏幕，但是商家没有例程，使用TFT_eSPI库测试不亮，遂改成320*480
 #define TFT_HEIGHT 480

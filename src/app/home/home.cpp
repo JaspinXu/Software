@@ -438,11 +438,11 @@ lv_obj_t *home_load()
     lv_obj_set_style_arc_width(screen_arc_1, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     // Set style for screen_arc_1. Part: LV_PART_INDICATOR, State: LV_STATE_DEFAULT
-    lv_obj_set_style_arc_color(screen_arc_1, lv_color_make(0x21, 0x95, 0xf6), LV_PART_INDICATOR | LV_STATE_DEFAULT);
+    lv_obj_set_style_arc_color(screen_arc_1, lv_color_make(0xff, 0x45, 0x00), LV_PART_INDICATOR | LV_STATE_DEFAULT);
     lv_obj_set_style_arc_width(screen_arc_1, 6, LV_PART_INDICATOR | LV_STATE_DEFAULT);
 
     // Set style for screen_arc_1. Part: LV_PART_KNOB, State: LV_STATE_DEFAULT
-    lv_obj_set_style_bg_color(screen_arc_1, lv_color_make(0x21, 0x95, 0xf6), LV_PART_KNOB | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(screen_arc_1, lv_color_make(0xff, 0x45, 0x00), LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(screen_arc_1, lv_color_make(0x21, 0x95, 0xf6), LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(screen_arc_1, LV_GRAD_DIR_NONE, LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(screen_arc_1, 255, LV_PART_KNOB | LV_STATE_DEFAULT);
@@ -661,7 +661,7 @@ lv_obj_t *home_load()
 
     // Set style for screen_label_3. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
     lv_obj_set_style_radius(screen_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(screen_label_3, lv_color_make(0xf6, 0x8c, 0x05), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(screen_label_3, lv_color_make(0x19, 0x19, 0x70), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(screen_label_3, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(screen_label_3, LV_GRAD_DIR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(screen_label_3, 251, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -740,7 +740,7 @@ lv_obj_t *home_load()
 
     // Set style for screen_label_2. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
     lv_obj_set_style_radius(screen_label_2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(screen_label_2, lv_color_make(0x14, 0x45, 0x6d), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(screen_label_2, lv_color_make(0x00, 0x64, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(screen_label_2, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(screen_label_2, LV_GRAD_DIR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(screen_label_2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -800,7 +800,7 @@ lv_obj_t *home_load()
 
     // Set style for screen_label_4. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
     lv_obj_set_style_radius(screen_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(screen_label_4, lv_color_make(0xb4, 0x32, 0x45), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(screen_label_4, lv_color_make(0xff, 0xd7, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(screen_label_4, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(screen_label_4, LV_GRAD_DIR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(screen_label_4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -855,12 +855,12 @@ lv_obj_t *home_load()
     lv_obj_set_pos(screen_label_5, 283, 171);
     lv_obj_set_size(screen_label_5, 80, 20);
     lv_obj_set_scrollbar_mode(screen_label_5, LV_SCROLLBAR_MODE_OFF);
-    lv_label_set_text(screen_label_5, "电脑监测器");
+    lv_label_set_text(screen_label_5, "状态监测");
     lv_label_set_long_mode(screen_label_5, LV_LABEL_LONG_WRAP);
 
     // Set style for screen_label_5. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
     lv_obj_set_style_radius(screen_label_5, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(screen_label_5, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(screen_label_5, lv_color_make(0x41, 0x69, 0xe1), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(screen_label_5, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(screen_label_5, LV_GRAD_DIR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(screen_label_5, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -997,11 +997,11 @@ lv_obj_t *home_load()
     lv_obj_set_style_arc_width(screen_arc_2, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     // Set style for screen_arc_2. Part: LV_PART_INDICATOR, State: LV_STATE_DEFAULT
-    lv_obj_set_style_arc_color(screen_arc_2, lv_color_make(0x87, 0xb4, 0xda), LV_PART_INDICATOR | LV_STATE_DEFAULT);
+    lv_obj_set_style_arc_color(screen_arc_2, lv_color_make(0x1e, 0x90, 0xff), LV_PART_INDICATOR | LV_STATE_DEFAULT);
     lv_obj_set_style_arc_width(screen_arc_2, 6, LV_PART_INDICATOR | LV_STATE_DEFAULT);
 
     // Set style for screen_arc_2. Part: LV_PART_KNOB, State: LV_STATE_DEFAULT
-    lv_obj_set_style_bg_color(screen_arc_2, lv_color_make(0x87, 0xb4, 0xda), LV_PART_KNOB | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(screen_arc_2, lv_color_make(0x1e, 0x90, 0xff), LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(screen_arc_2, lv_color_make(0x21, 0x95, 0xf6), LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(screen_arc_2, LV_GRAD_DIR_NONE, LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(screen_arc_2, 255, LV_PART_KNOB | LV_STATE_DEFAULT);
@@ -1041,11 +1041,11 @@ lv_obj_t *home_load()
     lv_obj_set_style_arc_width(screen_arc_6, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     // Set style for screen_arc_6. Part: LV_PART_INDICATOR, State: LV_STATE_DEFAULT
-    lv_obj_set_style_arc_color(screen_arc_6, lv_color_make(0x21, 0x95, 0xf6), LV_PART_INDICATOR | LV_STATE_DEFAULT);
+    lv_obj_set_style_arc_color(screen_arc_6, lv_color_make(0x80, 0x00, 0x00), LV_PART_INDICATOR | LV_STATE_DEFAULT);
     lv_obj_set_style_arc_width(screen_arc_6, 6, LV_PART_INDICATOR | LV_STATE_DEFAULT);
 
     // Set style for screen_arc_6. Part: LV_PART_KNOB, State: LV_STATE_DEFAULT
-    lv_obj_set_style_bg_color(screen_arc_6, lv_color_make(0x21, 0x95, 0xf6), LV_PART_KNOB | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(screen_arc_6, lv_color_make(0x80, 0x00, 0x00), LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(screen_arc_6, lv_color_make(0x21, 0x95, 0xf6), LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(screen_arc_6, LV_GRAD_DIR_NONE, LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(screen_arc_6, 255, LV_PART_KNOB | LV_STATE_DEFAULT);
@@ -1115,11 +1115,11 @@ lv_obj_t *home_load()
     lv_obj_set_style_arc_width(screen_arc_5, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     // Set style for screen_arc_5. Part: LV_PART_INDICATOR, State: LV_STATE_DEFAULT
-    lv_obj_set_style_arc_color(screen_arc_5, lv_color_make(0x21, 0x95, 0xf6), LV_PART_INDICATOR | LV_STATE_DEFAULT);
+    lv_obj_set_style_arc_color(screen_arc_5, lv_color_make(0xff, 0x00, 0xff), LV_PART_INDICATOR | LV_STATE_DEFAULT);
     lv_obj_set_style_arc_width(screen_arc_5, 6, LV_PART_INDICATOR | LV_STATE_DEFAULT);
 
     // Set style for screen_arc_5. Part: LV_PART_KNOB, State: LV_STATE_DEFAULT
-    lv_obj_set_style_bg_color(screen_arc_5, lv_color_make(0x21, 0x95, 0xf6), LV_PART_KNOB | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(screen_arc_5, lv_color_make(0xff, 0x00, 0xff), LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(screen_arc_5, lv_color_make(0x21, 0x95, 0xf6), LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(screen_arc_5, LV_GRAD_DIR_NONE, LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(screen_arc_5, 255, LV_PART_KNOB | LV_STATE_DEFAULT);
@@ -1159,11 +1159,11 @@ lv_obj_t *home_load()
     lv_obj_set_style_arc_width(screen_arc_4, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     // Set style for screen_arc_4. Part: LV_PART_INDICATOR, State: LV_STATE_DEFAULT
-    lv_obj_set_style_arc_color(screen_arc_4, lv_color_make(0x21, 0x95, 0xf6), LV_PART_INDICATOR | LV_STATE_DEFAULT);
+    lv_obj_set_style_arc_color(screen_arc_4, lv_color_make(0xff, 0x7f, 0x50), LV_PART_INDICATOR | LV_STATE_DEFAULT);
     lv_obj_set_style_arc_width(screen_arc_4, 6, LV_PART_INDICATOR | LV_STATE_DEFAULT);
 
     // Set style for screen_arc_4. Part: LV_PART_KNOB, State: LV_STATE_DEFAULT
-    lv_obj_set_style_bg_color(screen_arc_4, lv_color_make(0x21, 0x95, 0xf6), LV_PART_KNOB | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(screen_arc_4, lv_color_make(0xff, 0x7f, 0x50), LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(screen_arc_4, lv_color_make(0x21, 0x95, 0xf6), LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(screen_arc_4, LV_GRAD_DIR_NONE, LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(screen_arc_4, 255, LV_PART_KNOB | LV_STATE_DEFAULT);
@@ -1263,11 +1263,11 @@ lv_obj_t *home_load()
     lv_obj_set_style_arc_width(screen_arc_3, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     // Set style for screen_arc_3. Part: LV_PART_INDICATOR, State: LV_STATE_DEFAULT
-    lv_obj_set_style_arc_color(screen_arc_3, lv_color_make(0xf5, 0xa1, 0xe9), LV_PART_INDICATOR | LV_STATE_DEFAULT);
+    lv_obj_set_style_arc_color(screen_arc_3, lv_color_make(0xff, 0x00, 0x00), LV_PART_INDICATOR | LV_STATE_DEFAULT);
     lv_obj_set_style_arc_width(screen_arc_3, 6, LV_PART_INDICATOR | LV_STATE_DEFAULT);
 
     // Set style for screen_arc_3. Part: LV_PART_KNOB, State: LV_STATE_DEFAULT
-    lv_obj_set_style_bg_color(screen_arc_3, lv_color_make(0xf5, 0xa1, 0xe9), LV_PART_KNOB | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(screen_arc_3, lv_color_make(0xff, 0x00, 0x00), LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(screen_arc_3, lv_color_make(0x21, 0x95, 0xf6), LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(screen_arc_3, LV_GRAD_DIR_NONE, LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(screen_arc_3, 255, LV_PART_KNOB | LV_STATE_DEFAULT);
@@ -1522,8 +1522,8 @@ lv_obj_t *home_load()
 
     // Write codes screen_imgbtn_1
     lv_obj_t *screen_imgbtn_1 = lv_imgbtn_create(now_screen);
-    lv_obj_set_pos(screen_imgbtn_1, 342, 31);
-    lv_obj_set_size(screen_imgbtn_1, 100, 100);
+    lv_obj_set_pos(screen_imgbtn_1, 310, 6);
+    lv_obj_set_size(screen_imgbtn_1, 160, 150);
     lv_obj_set_scrollbar_mode(screen_imgbtn_1, LV_SCROLLBAR_MODE_OFF);
 
     // Set style for screen_imgbtn_1. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
@@ -1562,10 +1562,10 @@ lv_obj_t *home_load()
     lv_obj_set_style_img_recolor(screen_imgbtn_1, lv_color_make(0x00, 0x00, 0x00), LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_img_recolor_opa(screen_imgbtn_1, 0, LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_img_opa(screen_imgbtn_1, 255, LV_PART_MAIN | LV_STATE_CHECKED);
-    lv_imgbtn_set_src(screen_imgbtn_1, LV_IMGBTN_STATE_RELEASED, NULL, &_1_alpha_100x100, NULL);
-    lv_imgbtn_set_src(screen_imgbtn_1, LV_IMGBTN_STATE_PRESSED, NULL, &_1_alpha_100x100, NULL);
-    lv_imgbtn_set_src(screen_imgbtn_1, LV_IMGBTN_STATE_CHECKED_RELEASED, NULL, &_1_alpha_100x100, NULL);
-    lv_imgbtn_set_src(screen_imgbtn_1, LV_IMGBTN_STATE_CHECKED_PRESSED, NULL, &_1_alpha_100x100, NULL);
+    lv_imgbtn_set_src(screen_imgbtn_1, LV_IMGBTN_STATE_RELEASED, NULL, &_1_alpha_160x150, NULL);
+    lv_imgbtn_set_src(screen_imgbtn_1, LV_IMGBTN_STATE_PRESSED, NULL, &_1_alpha_160x150, NULL);
+    lv_imgbtn_set_src(screen_imgbtn_1, LV_IMGBTN_STATE_CHECKED_RELEASED, NULL, &_1_alpha_160x150, NULL);
+    lv_imgbtn_set_src(screen_imgbtn_1, LV_IMGBTN_STATE_CHECKED_PRESSED, NULL, &_1_alpha_160x150, NULL);
     lv_obj_add_flag(screen_imgbtn_1, LV_OBJ_FLAG_CHECKABLE);
 
     // Write codes screen_label_28

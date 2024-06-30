@@ -84,7 +84,7 @@ extern "C"
 		lv_obj_t *screen_label_28;
 	} lv_ui;
 
-	LV_IMG_DECLARE(_1_alpha_100x100);
+	LV_IMG_DECLARE(_1_alpha_160x150);
 
 // PCF8563
 #define BM8563_I2C_SDA 47
