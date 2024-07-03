@@ -1,16 +1,9 @@
-#include "app/lunar/lunar.h"
+#include "lunar.h"
 #include "app/fire/fire.h"
-#include "app/menu/setting.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <math.h>
-lv_obj_t *now_screen_label_4;
-lv_obj_t *now_screen_label_3;
 lv_timer_t *lunar_timer;
-lv_timer_t *advice_timer;
-
-String results_0_suggestion_0_dressing_brief;
-String results_0_suggestion_0_dressing_details;
 
 typedef struct
 {
@@ -472,7 +465,7 @@ lv_obj_t *lunar_load()
     lv_obj_set_style_shadow_spread(now_screen_label_1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_x(now_screen_label_1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_y(now_screen_label_1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(now_screen_label_1, lv_color_make(0x36, 0xbf, 0xf7), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(now_screen_label_1, lv_color_make(0xff, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(now_screen_label_1, &lv_chinese_font_32_all, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(now_screen_label_1, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(now_screen_label_1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -521,66 +514,6 @@ lv_obj_t *lunar_load()
 
     lv_img_set_pivot(now_screen_img_1, 50, 50);
     lv_img_set_angle(now_screen_img_1, 0);
-
-    // Write codes label_4_label_3
-    now_screen_label_3 = lv_label_create(now_screen);
-    lv_obj_set_pos(now_screen_label_3, 258, 141);
-    lv_obj_set_size(now_screen_label_3, 235, 38);
-    lv_obj_set_scrollbar_mode(now_screen_label_3, LV_SCROLLBAR_MODE_OFF);
-    lv_label_set_text_fmt(now_screen_label_3, "%s:%s", "宜", "出行 解除 移徙 入宅 开市");
-    lv_label_set_long_mode(now_screen_label_3, LV_LABEL_LONG_SCROLL_CIRCULAR);
-
-    // Set style for label_4_label_3. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
-    lv_obj_set_style_radius(now_screen_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(now_screen_label_3, lv_color_make(0xff, 0xff, 0xff), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(now_screen_label_3, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(now_screen_label_3, LV_GRAD_DIR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(now_screen_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(now_screen_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_color(now_screen_label_3, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_opa(now_screen_label_3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_spread(now_screen_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_ofs_x(now_screen_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_ofs_y(now_screen_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(now_screen_label_3, lv_color_make(0x36, 0xbf, 0xf7), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(now_screen_label_3, &lv_chinese_font_24_all, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_letter_space(now_screen_label_3, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_line_space(now_screen_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(now_screen_label_3, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(now_screen_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(now_screen_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(now_screen_label_3, 7, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(now_screen_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    // Write codes label_4_label_4
-    now_screen_label_4 = lv_label_create(now_screen);
-    lv_obj_set_pos(now_screen_label_4, 260, 188);
-    lv_obj_set_size(now_screen_label_4, 195, 100);
-    lv_obj_set_scrollbar_mode(now_screen_label_4, LV_SCROLLBAR_MODE_OFF);
-    // lv_label_set_text(now_screen_label_4, "\n");
-    lv_label_set_text_fmt(now_screen_label_4, "%s:%s", "热", "天气热，建议着短裙、短裤、短薄外套、T恤等夏季服装。");
-    lv_label_set_long_mode(now_screen_label_4, LV_LABEL_LONG_SCROLL_CIRCULAR);
-    // Set style for label_4_label_4. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
-    lv_obj_set_style_radius(now_screen_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(now_screen_label_4, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(now_screen_label_4, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(now_screen_label_4, LV_GRAD_DIR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(now_screen_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(now_screen_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_color(now_screen_label_4, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_opa(now_screen_label_4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_spread(now_screen_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_ofs_x(now_screen_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_ofs_y(now_screen_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(now_screen_label_4, lv_color_make(0x36, 0xbf, 0xf7), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(now_screen_label_4, &lv_chinese_font_24_all, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_letter_space(now_screen_label_4, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_line_space(now_screen_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(now_screen_label_4, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(now_screen_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(now_screen_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(now_screen_label_4, 7, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(now_screen_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     // Write codes label_4_label_5
     lv_obj_t *now_screen_label_5 = lv_label_create(now_screen);
@@ -644,11 +577,9 @@ lv_obj_t *lunar_load()
 
     lv_obj_add_event_cb(now_screen, gesture_lunar, LV_EVENT_GESTURE, NULL);
 
-    lv_lunar = {now_screen_label_1, now_screen_label_5, now_screen_label_6, now_screen_label_3};
+    lv_lunar = {now_screen_label_1, now_screen_label_5, now_screen_label_6};
 
     lunar_timer = lv_timer_create(lunar_timer_cb, 1000, (void *)&lv_lunar);
-
-    advice_timer = lv_timer_create(advice_cb, 60000, now_screen_label_4);
     
     return now_screen;
 }
@@ -659,14 +590,13 @@ void gesture_lunar(lv_event_t *event)
     lv_dir_t dir = lv_indev_get_gesture_dir(lv_indev_get_act());
     if (dir == LV_DIR_LEFT)
     {
-        Serial.print("LV_DIR_LEFT");
         lv_timer_del(lunar_timer);
-        app_open(bilibili_load, LV_SCR_LOAD_ANIM_MOVE_BOTTOM, 200, 10);
+        app_return(LV_SCR_LOAD_ANIM_MOVE_LEFT, 200, 10);
     }
     else if (dir == LV_DIR_RIGHT)
     {
         lv_timer_del(lunar_timer);
-        app_open(setting_load, LV_SCR_LOAD_ANIM_MOVE_BOTTOM, 200, 10);
+        app_open(home_load, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 200, 10);
     }
     else if (dir == LV_DIR_TOP)
     {
@@ -675,50 +605,7 @@ void gesture_lunar(lv_event_t *event)
     }
     else if (dir == LV_DIR_BOTTOM)
     {
-        Serial.print("LV_DIR_BOTTOM");
         lv_timer_del(lunar_timer);
         app_open(bilibili_load, LV_SCR_LOAD_ANIM_MOVE_BOTTOM, 200, 10);
-    }
-}
-
-void advice_init()
-{
-    const size_t capacity = 2 * JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(1) + 22 * JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(6) + JSON_OBJECT_SIZE(23) + 1660;
-
-    String now_https = String("GET /v3/life/suggestion.json?key=SYQAZcQPIoDp3vOPG&location=qingdao&language=zh-Hans&start=0&days=1") + " HTTP/1.1\r\n" + // 请求的是首页信息，HTTP版本号是1.1
-                       "Host: " + "api.seniverse.com" + "\r\n" +                                                                                         // 请求的网址信息
-                       "Connection: close\r\n" +                                                                                                         // 信息发送完毕后断开连接
-                       "\r\n";
-
-    if (advice_client.connect("api.seniverse.com", 80))
-    {
-        advice_client.print(now_https); // 向服务器发送HTTP请求
-        while (advice_client.connected() || advice_client.available())
-        { // 服务器保持连接
-            if (advice_client.available())
-            {
-                String line = advice_client.readStringUntil('\n'); // 等待响应并且读取响应信息
-                // Serial.println(line);
-                DynamicJsonDocument doc(capacity);
-                deserializeJson(doc, line);
-                JsonObject results_0_suggestion_0 = doc["results"][0]["suggestion"][0];
-
-                results_0_suggestion_0_dressing_brief = results_0_suggestion_0["dressing"]["brief"].as<String>();     // "热"
-                results_0_suggestion_0_dressing_details = results_0_suggestion_0["dressing"]["details"].as<String>(); // "天气热，建议着短裙、短裤、短薄外套、T恤等夏季服装。"
-                Serial.println(results_0_suggestion_0_dressing_brief);
-                Serial.println(results_0_suggestion_0_dressing_details);
-            }
-        }
-        advice_client.stop();
-    }
-}
-
-void advice_cb(lv_timer_t *timer)
-{
-    advice_init();
-    if (timer != NULL && timer->user_data != NULL)
-    {
-        lv_label_set_text_fmt(now_screen_label_4, "%s:%s", "热", "天气热，建议着短裙、短裤、短薄外套、T恤等夏季服装。");
-        lv_label_set_text_fmt(now_screen_label_3, "%s:%s", "宜", "出行 解除 移徙 入宅 开市");
     }
 }

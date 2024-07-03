@@ -1,4 +1,4 @@
-#include "app/ota/ota.h"
+#include "ota.h"
 
 const char *MQTT_SERVER = "bemfa.com";
 const int MQTT_PORT = 9501;
@@ -29,7 +29,7 @@ int fun_detect(char payload)
         return 3;
     else if (payload == 'P') // am/pm
         return 4;
-    else if (payload == 'M') // alarm
+    else if (payload == 'M') // music
         return 5;
 }
 
@@ -84,6 +84,12 @@ void time_phase(String temp)
     dataEnd = temp.indexOf(";", dataStart);
     dataStr = temp.substring(dataStart, dataEnd);
     timeChange.tm_sec = dataStr.toInt();
+    
+    char weekTemp[] = "week:";
+    dataStart = temp.indexOf(weekTemp) + strlen(weekTemp);
+    dataEnd = temp.indexOf(";", dataStart);
+    dataStr = temp.substring(dataStart, dataEnd);
+    timeChange.tm_wday = dataStr.toInt();
 
     Serial.println("TIME");
     Serial.println(timeChange.tm_year);
@@ -92,6 +98,7 @@ void time_phase(String temp)
     Serial.println(timeChange.tm_hour);
     Serial.println(timeChange.tm_min);
     Serial.println(timeChange.tm_sec);
+    Serial.println(timeChange.tm_wday);
 
     // Set RTC time
     I2C_BM8563_TimeTypeDef timeStruct;
@@ -144,28 +151,40 @@ void alarm_phase(String temp)
 
 void weather_phase(String temp)
 {
-    // time2023-06-30T12:06+08:00;tem30;weather晴;wind东北风;
+    //Wtem30;weather晴;high33;low24;
     int16_t dataStart = 0;
     int16_t dataEnd = 0;
     String dataStr;
 
-    char hourTemp[] = "tem";
-    dataStart = temp.indexOf(hourTemp) + strlen(hourTemp);
+    char temTemp[] = "tem:";
+    dataStart = temp.indexOf(temTemp) + strlen(temTemp);
     dataEnd = temp.indexOf(";", dataStart);
     dataStr = temp.substring(dataStart, dataEnd);
     tem_now = dataStr.toInt();
 
-    char minTemp[] = ";weather";
-    dataStart = temp.indexOf(minTemp) + strlen(minTemp);
+    char weatherTemp[] = "weather:";
+    dataStart = temp.indexOf(weatherTemp) + strlen(weatherTemp);
     dataEnd = temp.indexOf(";", dataStart);
     dataStr = temp.substring(dataStart, dataEnd);
     weather_condition = dataStr;
 
-    // char secTemp[] = ";wind";
-    // dataStart = temp.indexOf(secTemp) + strlen(secTemp);
-    // dataEnd = temp.indexOf(";", dataStart);
-    // dataStr = temp.substring(dataStart, dataEnd);
-    // int8_t sec_temp = dataStr.toInt();
+    char highTemp[] = "high:";
+    dataStart = temp.indexOf(highTemp) + strlen(highTemp);
+    dataEnd = temp.indexOf(";", dataStart);
+    dataStr = temp.substring(dataStart, dataEnd);
+    results_0_daily_0_high = dataStr;
+
+    char lowTemp[] = "low:";
+    dataStart = temp.indexOf(lowTemp) + strlen(lowTemp);
+    dataEnd = temp.indexOf(";", dataStart);
+    dataStr = temp.substring(dataStart, dataEnd);
+    results_0_daily_0_low = dataStr;
+
+    char airTemp[] = "air:";
+    dataStart = temp.indexOf(airTemp) + strlen(airTemp);
+    dataEnd = temp.indexOf(";", dataStart);
+    dataStr = temp.substring(dataStart, dataEnd);
+    air = dataStr;
 
 }
 
@@ -224,32 +243,26 @@ void mqtt_reconnect()
 void callback(char *topic, byte *payload, unsigned int length)
 {
     Serial.print("Message arrived [");
-    Serial.print(topic); // 打印主题信息
+    Serial.print(topic); 
     Serial.print("] ");
     String message;
-    for (int i = 1; i < length; i++)
+    for (int i = 1; i < length; i++)        //注意这里是从i=1开始
     {
-        message += (char)payload[i]; // 将每个字节转换为字符并添加到字符串中
+        message += (char)payload[i];
     }
-    
-    //注意：此处如果用fm格式化，传递稍微长一点的参数就会出现乱码，只能用lv_label_set_text，.c_str()
 
     lv_label_set_text(label_1_label_2, message.c_str());
     delay(10);
-    int temp = fun_detect((char)payload[0]);
-    Serial.println((char)payload[0]); // 打印接收到的字符串
+    int temp = fun_detect((char)payload[0]);  //注意这里是获取payload[0]作为标识
+    Serial.println((char)payload[0]); 
     phase_mqtt(temp, message);
-    Serial.println(message); // 打印接收到的字符串
+    Serial.println(message); 
 }
 
 lv_obj_t *ota_load()
 {
-
-    // Wire1.begin(BM8563_I2C_SDA, BM8563_I2C_SCL);
-    // rtc.begin();
-
-    client.setServer(MQTT_SERVER, MQTT_PORT); // 设定MQTT服务器与使用的端口
-    client.setCallback(callback);             // 设定回调方式，当ESP32收到订阅消息时会调用此方法
+    client.setServer(MQTT_SERVER, MQTT_PORT); 
+    client.setCallback(callback);         
 
     now_screen = lv_obj_create(NULL);
 
@@ -263,10 +276,10 @@ lv_obj_t *ota_load()
 
     // Write codes label_1_label_1
     lv_obj_t *label_1_label_1 = lv_label_create(now_screen);
-    lv_obj_set_pos(label_1_label_1, 55, 89); ////这里或许需要微调1111111111111111111111111111111111111111111111111111111111
-    lv_obj_set_size(label_1_label_1, 371, 142);    ////这里或许需要微调111111111111111111111111111111111111111111111111111
+    lv_obj_set_pos(label_1_label_1, 55, 89);
+    lv_obj_set_size(label_1_label_1, 371, 142);   
     lv_obj_set_scrollbar_mode(label_1_label_1, LV_SCROLLBAR_MODE_OFF);
-    lv_label_set_text(label_1_label_1, "请使用APP操控或\n远程更新固件");
+    lv_label_set_text(label_1_label_1, "请使用ESP32操控器");
     lv_label_set_long_mode(label_1_label_1, LV_LABEL_LONG_WRAP);
 
     // Set style for label_1_label_1. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
@@ -281,7 +294,7 @@ lv_obj_t *ota_load()
     lv_obj_set_style_shadow_spread(label_1_label_1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_x(label_1_label_1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_y(label_1_label_1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(label_1_label_1, lv_color_make(0x00, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(label_1_label_1, lv_color_make(0xff, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(label_1_label_1, &lv_chinese_font_24_all, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(label_1_label_1, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(label_1_label_1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -293,8 +306,8 @@ lv_obj_t *ota_load()
 
     // Write codes label_1_spinner_1
     lv_obj_t *label_1_spinner_1 = lv_spinner_create(now_screen, 10000, 20);
-    lv_obj_set_pos(label_1_spinner_1, 190, 170);       ////这里或许需要微调111111111111111111111111111111111111111111111111111
-    lv_obj_set_size(label_1_spinner_1, 100, 100);         ////这里或许需要微调111111111111111111111111111111111111111111111111111
+    lv_obj_set_pos(label_1_spinner_1, 190, 170);    
+    lv_obj_set_size(label_1_spinner_1, 100, 100);    
 
     // Set style for label_1_spinner_1. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
     lv_obj_set_style_bg_color(label_1_spinner_1, lv_color_make(0xee, 0xee, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -320,13 +333,13 @@ lv_obj_t *ota_load()
 
     // Write codes label_1_btn_1
     lv_obj_t *label_1_btn_1 = lv_btn_create(now_screen);
-    lv_obj_set_pos(label_1_btn_1, 363, 18);           ////这里或许需要微调111111111111111111111111111111111111111111111111111
-    lv_obj_set_size(label_1_btn_1, 100, 50);         ////这里或许需要微调111111111111111111111111111111111111111111111111111
+    lv_obj_set_pos(label_1_btn_1, 363, 18);      
+    lv_obj_set_size(label_1_btn_1, 100, 50);      
     lv_obj_set_scrollbar_mode(label_1_btn_1, LV_SCROLLBAR_MODE_OFF);
 
     // Set style for label_1_btn_1. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
     lv_obj_set_style_radius(label_1_btn_1, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(label_1_btn_1, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(label_1_btn_1, lv_color_make(0xff, 0x8c, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(label_1_btn_1, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(label_1_btn_1, LV_GRAD_DIR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(label_1_btn_1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -380,9 +393,6 @@ lv_obj_t *ota_load()
     lv_obj_add_event_cb(label_1_btn_1, mqtt_gesture, LV_EVENT_CLICKED, NULL);
 
     mqtt_timer = lv_timer_create(mqtt_timer_cb, 500, NULL);
-
-    // gesture(0, 1, 1, 0);
-
     return now_screen;
 }
 
@@ -390,7 +400,7 @@ void mqtt_gesture(lv_event_t *e)
 {
     lv_timer_del(mqtt_timer);
     client.disconnect();
-    Serial.println("MQTT通信已停止");
+    Serial.println("MQTT通信停止");
     app_return(LV_SCR_LOAD_ANIM_MOVE_TOP, 200, 20);
 }
 

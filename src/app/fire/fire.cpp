@@ -1,28 +1,14 @@
-/*
- * @Author: JaspinXu sea.xuo@gmail.com
- * @Date: 2024-05-04 10:32:54
- * @LastEditors: JaspinXu sea.xuo@gmail.com
- * @LastEditTime: 2024-06-09 12:15:27
- * @FilePath: \Software\src\app\fire\fire.cpp
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 #include "fire.h"
 #include "app/music/music.h"
 #include <FastLED.h>
 
 #define LED_PIN     13
 #define NUM_LEDS    1
-#define BRIGHTNESS  50
+#define BRIGHTNESS  100
 #define LED_TYPE    SK6812
 #define COLOR_ORDER GRB
-#define UPDATES_PER_SECOND 100
 
 CRGB leds[NUM_LEDS];
-CRGBPalette16 currentPalette;
-TBlendType    currentBlending;
-
-extern CRGBPalette16 myRedWhiteBluePalette;
-extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
 
 SMTPSession smtp;
 double smptFlag;
@@ -92,22 +78,22 @@ lv_obj_t *fire_load()
     lv_obj_set_pos(label_2_label_3, 83, 122);
     lv_obj_set_size(label_2_label_3, 315, 50);
     lv_obj_set_scrollbar_mode(label_2_label_3, LV_SCROLLBAR_MODE_OFF);
-    lv_label_set_text(label_2_label_3, "已经向主机发送邮件");
+    lv_label_set_text(label_2_label_3, "已经向QQ发送邮件");
     lv_label_set_long_mode(label_2_label_3, LV_LABEL_LONG_WRAP);
 
     // Set style for label_2_label_3. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
     lv_obj_set_style_radius(label_2_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(label_2_label_3, lv_color_make(0xff, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(label_2_label_3, lv_color_make(0xff, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(label_2_label_3, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_color(label_2_label_3, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(label_2_label_3, LV_GRAD_DIR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(label_2_label_3, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(label_2_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_color(label_2_label_3, lv_color_make(0xff, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_color(label_2_label_3, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_opa(label_2_label_3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_spread(label_2_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_x(label_2_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_y(label_2_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(label_2_label_3, lv_color_make(0xff, 0xff, 0xff), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(label_2_label_3, lv_color_make(0x00, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(label_2_label_3, &lv_chinese_font_24_all, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(label_2_label_3, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(label_2_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -127,7 +113,7 @@ lv_obj_t *fire_load()
 
     // Set style for label_2_label_4. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
     lv_obj_set_style_radius(label_2_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(label_2_label_4, lv_color_make(0xff, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(label_2_label_4, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(label_2_label_4, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(label_2_label_4, LV_GRAD_DIR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(label_2_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -137,7 +123,7 @@ lv_obj_t *fire_load()
     lv_obj_set_style_shadow_spread(label_2_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_x(label_2_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_y(label_2_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(label_2_label_4, lv_color_make(0xff, 0xff, 0xff), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(label_2_label_4, lv_color_make(0x00, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(label_2_label_4, &lv_chinese_font_32_all, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(label_2_label_4, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(label_2_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -146,15 +132,12 @@ lv_obj_t *fire_load()
     lv_obj_set_style_pad_right(label_2_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(label_2_label_4, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_bottom(label_2_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-
     lv_obj_add_event_cb(label_2_btn_1, fire_gesture, LV_EVENT_LONG_PRESSED, NULL);
 
-    SK6812Init();
     smtp_init();
-    SK6812Loop();
     show_number2();
-    fire_timer = lv_timer_create(fire_timer_cb, 5000, NULL);
-
+    SK6812Loop();
+    fire_timer = lv_timer_create(fire_timer_cb, 300, NULL);
     return now_screen;
 }
 
@@ -175,12 +158,12 @@ void smtp_init()
     config.time.day_light_offset = 0;
 
     SMTP_Message message;
-    message.sender.name = F("JaspinXu's ESP32S3");
+    message.sender.name = F("ESP32S3");
     message.sender.email = AUTHOR_EMAIL;
-    message.subject = F("FIRE!");
+    message.subject = F("火灾警报");
     message.addRecipient(F("Master"), RECIPIENT_EMAIL);
 
-    String textMsg = "Hope you have a good day";
+    String textMsg = "火灾已发生，请尽快逃离！！！";
     message.text.content = textMsg;
     message.text.charSet = F("us-ascii");
     message.text.transfer_encoding = Content_Transfer_Encoding::enc_7bit;
@@ -233,115 +216,40 @@ void fire_gesture(lv_event_t *e)
 {
     SendData(0x13);
     lv_timer_del(fire_timer);
+    SK6812Stop();
     Serial.println("退出警报");
     app_return(LV_SCR_LOAD_ANIM_MOVE_BOTTOM, 200, 20);
 }
 
 void fire_timer_cb(lv_timer_t *timer)
 {
-    show_number1();
+    SK6812Loop();
 }
 
 
-void SetupTotallyRandomPalette()
+void SK6812Init() 
 {
-    for( int i = 0; i < 16; i++) {
-        currentPalette[i] = CHSV( random8(), 255, random8());
-    }
-}
-
-void SetupBlackAndWhiteStripedPalette()
-{
-    fill_solid( currentPalette, 16, CRGB::Black);
-    currentPalette[0] = CRGB::White;
-    currentPalette[4] = CRGB::White;
-    currentPalette[8] = CRGB::White;
-    currentPalette[12] = CRGB::White;
-}
-
-void SetupPurpleAndGreenPalette()
-{
-    CRGB purple = CHSV( HUE_PURPLE, 255, 255);
-    CRGB green  = CHSV( HUE_GREEN, 255, 255);
-    CRGB black  = CRGB::Black;
-    
-    currentPalette = CRGBPalette16(
-                                   green,  green,  black,  black,
-                                   purple, purple, black,  black,
-                                   green,  green,  black,  black,
-                                   purple, purple, black,  black );
-}
-
-const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM =
-{
-    CRGB::Red,
-    CRGB::Gray, 
-    CRGB::Blue,
-    CRGB::Black,
-    
-    CRGB::Red,
-    CRGB::Gray,
-    CRGB::Blue,
-    CRGB::Black,
-    
-    CRGB::Red,
-    CRGB::Red,
-    CRGB::Gray,
-    CRGB::Gray,
-    CRGB::Blue,
-    CRGB::Blue,
-    CRGB::Black,
-    CRGB::Black
-};
-
-void FillLEDsFromPaletteColors( uint8_t colorIndex)
-{
-    uint8_t brightness = 255;
-    
-    for( int i = 0; i < NUM_LEDS; i++) {
-        leds[i] = ColorFromPalette( currentPalette, colorIndex, brightness, currentBlending);
-        colorIndex += 3;
-    }
-}
-
-void ChangePalettePeriodically()
-{
-    uint8_t secondHand = (millis() / 1000) % 60;
-    static uint8_t lastSecond = 99;
-    
-    if( lastSecond != secondHand) {
-        lastSecond = secondHand;
-        if( secondHand ==  0)  { currentPalette = RainbowColors_p;         currentBlending = LINEARBLEND; }
-        if( secondHand == 10)  { currentPalette = RainbowStripeColors_p;   currentBlending = NOBLEND;  }
-        if( secondHand == 15)  { currentPalette = RainbowStripeColors_p;   currentBlending = LINEARBLEND; }
-        if( secondHand == 20)  { SetupPurpleAndGreenPalette();             currentBlending = LINEARBLEND; }
-        if( secondHand == 25)  { SetupTotallyRandomPalette();              currentBlending = LINEARBLEND; }
-        if( secondHand == 30)  { SetupBlackAndWhiteStripedPalette();       currentBlending = NOBLEND; }
-        if( secondHand == 35)  { SetupBlackAndWhiteStripedPalette();       currentBlending = LINEARBLEND; }
-        if( secondHand == 40)  { currentPalette = CloudColors_p;           currentBlending = LINEARBLEND; }
-        if( secondHand == 45)  { currentPalette = PartyColors_p;           currentBlending = LINEARBLEND; }
-        if( secondHand == 50)  { currentPalette = myRedWhiteBluePalette_p; currentBlending = NOBLEND;  }
-        if( secondHand == 55)  { currentPalette = myRedWhiteBluePalette_p; currentBlending = LINEARBLEND; }
-    }
-}
-
-void SK6812Init() {
     delay( 1000 ); 
     FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
-    FastLED.setBrightness(  BRIGHTNESS );
-    currentPalette = RainbowColors_p;
-    currentBlending = LINEARBLEND;
+    FastLED.setBrightness(BRIGHTNESS);
 }
-
 
 void SK6812Loop()
 {
-    ChangePalettePeriodically();
-    static uint8_t startIndex = 0;
-    startIndex = startIndex + 1; 
-    
-    FillLEDsFromPaletteColors( startIndex);
-    
+    fill_solid(leds, NUM_LEDS, CRGB::Red);
     FastLED.show();
-    FastLED.delay(1000 / UPDATES_PER_SECOND);
+    FastLED.delay(300);
+    fill_solid(leds, NUM_LEDS, CRGB::Green);
+    FastLED.show();
+    FastLED.delay(300);
+    fill_solid(leds, NUM_LEDS, CRGB::Blue);
+    FastLED.show();
+    FastLED.delay(300);
+}
+
+void SK6812Stop()
+{
+    fill_solid(leds, NUM_LEDS, CRGB::Black);
+    FastLED.show();
+    delay(10);
 }

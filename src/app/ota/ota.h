@@ -8,8 +8,8 @@ void mqtt_reconnect();
 static void kb_label_1_event_cb(lv_event_t *e);
 void mqtt_timer_cb(lv_timer_t *timer);
 int fun_detect(char payload);
-void phase_mqtt(int fun_choose);
-void weather_phase();
+void phase_mqtt(int fun_choose, String message);
+void weather_phase(String temp);
 void alarm_phase(String temp);
 void time_phase(String temp);
 extern I2C_BM8563_DateTypeDef dateStruct;
@@ -24,4 +24,6 @@ extern String position;
 extern String weather_condition;
 extern String air;
 extern String update_time;
+extern String results_0_daily_0_high;
+extern String results_0_daily_0_low;
 

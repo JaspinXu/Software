@@ -5,7 +5,6 @@ typedef struct _lv_lunar
     lv_obj_t *lunar_year;    
     lv_obj_t *lunar_monthdate;    
     lv_obj_t *lunar_jieqi;    
-    lv_obj_t *lunar_advice;    
 } lv_lunar_t;
 
 lv_obj_t *lunar_load();
@@ -24,6 +23,3 @@ LV_IMG_DECLARE(_snake_alpha_197x264);
 LV_IMG_DECLARE(_tiger_alpha_197x264);
 LV_IMG_DECLARE(_horse_alpha_197x264);
 LV_IMG_DECLARE(_loong_alpha_197x264);
-void advice_cb(lv_timer_t *timer);
-void advice_init();
-extern WiFiClient advice_client;;

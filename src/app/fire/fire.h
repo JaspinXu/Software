@@ -1,7 +1,7 @@
 #pragma once
 
 #ifndef BRIGHTNESS  
-#define BRIGHTNESS  50
+#define BRIGHTNESS  100
 #endif
 
 #ifndef LED_TYPE   
@@ -10,10 +10,6 @@
 
 #ifndef COLOR_ORDER 
 #define COLOR_ORDER GRB
-#endif
-
-#ifndef UPDATES_PER_SECOND 
-#define UPDATES_PER_SECOND 100
 #endif
 
 #include "head.h"
@@ -37,11 +33,7 @@ void fire_timer_cb(lv_timer_t *timer);
 
 void SK6812Loop();
 void SK6812Init();
-void ChangePalettePeriodically();
-void FillLEDsFromPaletteColors( uint8_t colorIndex);
-void SetupPurpleAndGreenPalette();
-void SetupBlackAndWhiteStripedPalette();
-void SetupTotallyRandomPalette();
+void SK6812Stop();
 
 
 

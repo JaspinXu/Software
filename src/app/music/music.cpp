@@ -2,13 +2,13 @@
 double music_alarmFlag = 0;
 lv_timer_t *music_alarm_timer;
 
-void SendData(char addr) 
+void SendData(uint8_t addr) 
 {
     digitalWrite(music_pin, HIGH); 
     delayMicroseconds(1000);
     digitalWrite(music_pin, LOW); 
     delayMicroseconds(3200);   
-    for (int i = 0; i < 8; i++)  
+    for (uint8_t i = 0; i < 8; i++)  
     {
         digitalWrite(music_pin, HIGH);
         if (addr & 0x01) 
@@ -34,7 +34,7 @@ void show_number1()
     SendData(0x09); 
     SendData(0x00);
     SendData(0x0c); 
-    delay(10);   
+    delay(2000);   
 
     SendData(0x0a); 
     SendData(0x01); 
@@ -47,7 +47,7 @@ void show_number2()
     SendData(0x09); 
     SendData(0x00);
     SendData(0x0c); 
-    delay(10);     
+    delay(2000);     
 
 
     SendData(0x0a); 
@@ -61,7 +61,7 @@ void show_number3()
     SendData(0x09); 
     SendData(0x00);
     SendData(0x0c); 
-    delay(10);     
+    delay(2000);     
 
     SendData(0x0a); 
     SendData(0x03); 
@@ -97,27 +97,12 @@ lv_obj_t *alarm_load()
     lv_obj_set_style_bg_grad_dir(now_screen, LV_GRAD_DIR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(now_screen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    // Write codes screen_img_1
-    lv_obj_t *screen_img_1 = lv_img_create(now_screen);
-    lv_obj_set_pos(screen_img_1, 296, 21);
-    lv_obj_set_size(screen_img_1, 155, 160);
-    lv_obj_set_scrollbar_mode(screen_img_1, LV_SCROLLBAR_MODE_OFF);
-
-    // Set style for screen_img_1. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
-    lv_obj_set_style_img_recolor(screen_img_1, lv_color_make(0xff, 0xff, 0xff), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_img_recolor_opa(screen_img_1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_img_opa(screen_img_1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_add_flag(screen_img_1, LV_OBJ_FLAG_CLICKABLE);
-    lv_img_set_src(screen_img_1, &_1_alpha_155x160);
-    lv_img_set_pivot(screen_img_1, 50, 50);
-    lv_img_set_angle(screen_img_1, 0);
-
     // Write codes screen_label_1
     lv_obj_t *screen_label_1 = lv_label_create(now_screen);
-    lv_obj_set_pos(screen_label_1, 56, 44);
+    lv_obj_set_pos(screen_label_1, 140, 44);
     lv_obj_set_size(screen_label_1, 183, 115);
     lv_obj_set_scrollbar_mode(screen_label_1, LV_SCROLLBAR_MODE_OFF);
-    lv_label_set_text(screen_label_1, "闹钟警报");
+    lv_label_set_text(screen_label_1, "闹钟已开");
     lv_label_set_long_mode(screen_label_1, LV_LABEL_LONG_WRAP);
 
     // Set style for screen_label_1. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
@@ -144,7 +129,7 @@ lv_obj_t *alarm_load()
 
     // Write codes screen_btn_1
     lv_obj_t *screen_btn_1 = lv_btn_create(now_screen);
-    lv_obj_set_pos(screen_btn_1, 288, 205);
+    lv_obj_set_pos(screen_btn_1, 180, 190);
     lv_obj_set_size(screen_btn_1, 118, 66);
     lv_obj_set_scrollbar_mode(screen_btn_1, LV_SCROLLBAR_MODE_OFF);
 
@@ -171,38 +156,11 @@ lv_obj_t *alarm_load()
     lv_obj_set_style_pad_all(screen_btn_1, 0, LV_STATE_DEFAULT);
     lv_obj_align(screen_btn_1_label, LV_ALIGN_CENTER, 0, 0);
 
-    // Write codes screen_btn_2
-    lv_obj_t *screen_btn_2 = lv_btn_create(now_screen);
-    lv_obj_set_pos(screen_btn_2, 88, 205);
-    lv_obj_set_size(screen_btn_2, 118, 66);
-    lv_obj_set_scrollbar_mode(screen_btn_2, LV_SCROLLBAR_MODE_OFF);
-
-    // Set style for screen_btn_2. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
-    lv_obj_set_style_radius(screen_btn_2, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(screen_btn_2, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(screen_btn_2, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(screen_btn_2, LV_GRAD_DIR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(screen_btn_2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(screen_btn_2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_color(screen_btn_2, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_opa(screen_btn_2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_spread(screen_btn_2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_ofs_x(screen_btn_2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_ofs_y(screen_btn_2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(screen_btn_2, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(screen_btn_2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(screen_btn_2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(screen_btn_2, lv_color_make(0xff, 0xff, 0xff), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(screen_btn_2, &lv_chinese_font_24_all, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(screen_btn_2, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_t *screen_btn_2_label = lv_label_create(screen_btn_2);
-    lv_label_set_text(screen_btn_2_label, "推迟");
-    lv_obj_set_style_pad_all(screen_btn_2, 0, LV_STATE_DEFAULT);
-    lv_obj_align(screen_btn_2_label, LV_ALIGN_CENTER, 0, 0);
-
     lv_obj_add_event_cb(screen_btn_1, alarm_cancel_event, LV_EVENT_CLICKED, NULL);
     music_alarm_change();
-    music_alarm_timer = lv_timer_create(music_alarm_timer_cb, 10000, NULL);
+    SK6812Loop();
+    music_alarm_timer = lv_timer_create(music_alarm_timer_cb, 300, NULL);
+
     return now_screen;
 }
 
@@ -210,6 +168,7 @@ void alarm_cancel_event(lv_event_t *e)
 {
     SendData(0x13);
     lv_timer_del(music_alarm_timer);
+    SK6812Stop();
     app_return(LV_SCR_LOAD_ANIM_MOVE_RIGHT, 200, 20);
 }
 
@@ -233,5 +192,5 @@ void music_alarm_change()
 
 void music_alarm_timer_cb(lv_timer_t *timer)
 {
-    music_alarm_change();
+    SK6812Loop();
 }

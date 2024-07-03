@@ -15,6 +15,8 @@
 #define DHTPIN 11
 #define DHTTYPE DHT11
 
+#define MQ2PIN 5
+
 #ifndef music_pin
 #define music_pin 12
 #endif
@@ -139,7 +141,7 @@ extern "C"
 
 
 	void save_event(lv_event_t *e);
-	extern void weather_phase();
+	extern void weather_phase(String temp);
 	extern void alarm_phase(String temp);
 	extern void time_phase(String temp);
 	extern lv_ui guider_ui;

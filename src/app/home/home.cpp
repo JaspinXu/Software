@@ -29,7 +29,6 @@ I2C_BM8563_TimeTypeDef alarmStruct = {13, 14, 0};
 // computer
 WiFiClient computer_client;
 WiFiClient weather_client;
-WiFiClient advice_client;
 const char *host = "192.168.43.163";
 int cpu_usage = 0;
 int gpu_tem = 0;
@@ -45,11 +44,11 @@ int minutes = 0;
 int second = 0;
 
 // weather
-const char *results_0_daily_0_low = "24";
-const char *results_0_daily_0_high = "33";
+String results_0_daily_0_low = "24";
+String results_0_daily_0_high = "33";
 int weather_timer_flag = 0;
 int tem_now = 31;
-String position = "山东青岛";
+String position = "青岛";
 String weather_condition = "晴";
 String air = "空气优";
 String update_time = "20:13:38";
@@ -265,7 +264,7 @@ void weather_timer_cb(lv_timer_t *timer)
         }
         if (weather->weather_air != NULL)
         {
-            lv_label_set_text_fmt(weather->weather_air, "%s|空气优", weather_condition);
+            lv_label_set_text_fmt(weather->weather_air, "%s|%s", weather_condition, air);
         }
         if (weather->update_time != NULL)
         {
@@ -342,7 +341,7 @@ void alarm_timer_cb(lv_timer_t *timer)
 
 void mq2_timer_cb(lv_timer_t *timer)
 {
-    if (digitalRead(5) == 0)
+    if (digitalRead(MQ2PIN) == 0)
     {
         lv_timer_del(clock_timer);
         lv_timer_del(weather_timer);
@@ -670,7 +669,7 @@ lv_obj_t *home_load()
     lv_obj_set_style_shadow_ofs_x(screen_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_y(screen_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(screen_label_3, lv_color_make(0xff, 0xff, 0xff), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(screen_label_3, &lv_chinese_font_12_all, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(screen_label_3, &chinese_hei_16, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(screen_label_3, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(screen_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(screen_label_3, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -749,7 +748,7 @@ lv_obj_t *home_load()
     lv_obj_set_style_shadow_ofs_x(screen_label_2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_y(screen_label_2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(screen_label_2, lv_color_make(0xff, 0xff, 0xff), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(screen_label_2, &lv_chinese_font_12_all, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(screen_label_2, &chinese_hei_16, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(screen_label_2, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(screen_label_2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(screen_label_2, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -779,7 +778,7 @@ lv_obj_t *home_load()
     lv_obj_set_style_shadow_ofs_x(screen_label_10, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_y(screen_label_10, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(screen_label_10, lv_color_make(0x00, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(screen_label_10, &lv_chinese_font_12_all, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(screen_label_10, &chinese_hei_16, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(screen_label_10, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(screen_label_10, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(screen_label_10, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -809,7 +808,7 @@ lv_obj_t *home_load()
     lv_obj_set_style_shadow_ofs_x(screen_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_y(screen_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(screen_label_4, lv_color_make(0xff, 0xff, 0xff), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(screen_label_4, &lv_chinese_font_12_all, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(screen_label_4, &chinese_hei_16, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(screen_label_4, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(screen_label_4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(screen_label_4, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -853,7 +852,7 @@ lv_obj_t *home_load()
     lv_obj_set_pos(screen_label_5, 283, 171);
     lv_obj_set_size(screen_label_5, 80, 20);
     lv_obj_set_scrollbar_mode(screen_label_5, LV_SCROLLBAR_MODE_OFF);
-    lv_label_set_text(screen_label_5, "状态监测");
+    lv_label_set_text(screen_label_5, "电脑监测");
     lv_label_set_long_mode(screen_label_5, LV_LABEL_LONG_WRAP);
 
     // Set style for screen_label_5. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
@@ -869,7 +868,7 @@ lv_obj_t *home_load()
     lv_obj_set_style_shadow_ofs_x(screen_label_5, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_y(screen_label_5, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(screen_label_5, lv_color_make(0xff, 0xff, 0xff), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(screen_label_5, &lv_chinese_font_12_all, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(screen_label_5, &chinese_hei_16, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(screen_label_5, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(screen_label_5, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(screen_label_5, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -883,7 +882,7 @@ lv_obj_t *home_load()
     lv_obj_set_pos(screen_label_13, 47, 267);
     lv_obj_set_size(screen_label_13, 94, 15);
     lv_obj_set_scrollbar_mode(screen_label_13, LV_SCROLLBAR_MODE_OFF);
-    lv_label_set_text_fmt(screen_label_13, "%s|空气优", weather_condition);
+    lv_label_set_text_fmt(screen_label_13, "%s|%s", weather_condition, air);
     lv_label_set_long_mode(screen_label_13, LV_LABEL_LONG_WRAP);
 
     // Set style for screen_label_13. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
@@ -899,7 +898,7 @@ lv_obj_t *home_load()
     lv_obj_set_style_shadow_ofs_x(screen_label_13, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_y(screen_label_13, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(screen_label_13, lv_color_make(0x00, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(screen_label_13, &lv_chinese_font_12_all, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(screen_label_13, &chinese_hei_16, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(screen_label_13, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(screen_label_13, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(screen_label_13, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -1061,7 +1060,7 @@ lv_obj_t *home_load()
     lv_obj_set_pos(screen_label_26, 281, 270);
     lv_obj_set_size(screen_label_26, 33, 13);
     lv_obj_set_scrollbar_mode(screen_label_26, LV_SCROLLBAR_MODE_OFF);
-    lv_label_set_text(screen_label_26, "30℃");
+    lv_label_set_text(screen_label_26, "54℃");
     lv_label_set_long_mode(screen_label_26, LV_LABEL_LONG_WRAP);
 
     // Set style for screen_label_26. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
@@ -1403,7 +1402,7 @@ lv_obj_t *home_load()
     lv_obj_set_pos(screen_label_23, 213, 268);
     lv_obj_set_size(screen_label_23, 33, 13);
     lv_obj_set_scrollbar_mode(screen_label_23, LV_SCROLLBAR_MODE_OFF);
-    lv_label_set_text(screen_label_23, "30℃");
+    lv_label_set_text(screen_label_23, "54℃");
     lv_label_set_long_mode(screen_label_23, LV_LABEL_LONG_WRAP);
 
     // Set style for screen_label_23. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
@@ -1433,7 +1432,7 @@ lv_obj_t *home_load()
     lv_obj_set_pos(screen_label_24, 349, 270);
     lv_obj_set_size(screen_label_24, 33, 13);
     lv_obj_set_scrollbar_mode(screen_label_24, LV_SCROLLBAR_MODE_OFF);
-    lv_label_set_text(screen_label_24, "30℃");
+    lv_label_set_text(screen_label_24, "5%");
     lv_label_set_long_mode(screen_label_24, LV_LABEL_LONG_WRAP);
 
     // Set style for screen_label_24. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
@@ -1463,7 +1462,7 @@ lv_obj_t *home_load()
     lv_obj_set_pos(screen_label_25, 417, 270);
     lv_obj_set_size(screen_label_25, 33, 13);
     lv_obj_set_scrollbar_mode(screen_label_25, LV_SCROLLBAR_MODE_OFF);
-    lv_label_set_text(screen_label_25, "30℃");
+    lv_label_set_text(screen_label_25, "5%");
     lv_label_set_long_mode(screen_label_25, LV_LABEL_LONG_WRAP);
 
     // Set style for screen_label_25. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
@@ -1709,7 +1708,7 @@ static void kb_screen_event_cb(lv_event_t *e)
 void weather_init()
 {
     const size_t capacity = 2 * JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(6) + JSON_OBJECT_SIZE(14) + 390;
-    const size_t capacity2 = 2 * JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(6) + JSON_OBJECT_SIZE(14) + 390;
+    const size_t capacity2 = 2 *JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(6) + JSON_OBJECT_SIZE(14) + 808;
     String now_https = String("GET /v3/weather/now.json?key=S2OugJWPdzil-v8IN&location=qingdao&language=zh-Hans&unit=c&unit=c&start=-1&days=1") + " HTTP/1.1\r\n" + // 请求的是首页信息，HTTP版本号是1.1
                        "Host: " + "api.seniverse.com" + "\r\n" +                                                                                                    // 请求的网址信息
                        "Connection: close\r\n" +                                                                                                                    // 信息发送完毕后断开连接
@@ -1735,6 +1734,19 @@ void weather_init()
                 update_time = doc["results"][0]["last_update"].as<String>();
                 position = doc["results"][0]["location"]["name"].as<String>();
                 weather_condition = now["text"].as<String>();
+            }
+        }
+        weather_client.print(highlow_https); 
+        while (weather_client.connected() || weather_client.available())
+        { 
+            if (weather_client.available())
+            {
+                String line2 = weather_client.readStringUntil('\n'); 
+                DynamicJsonDocument doc(capacity2);
+                deserializeJson(doc, line2);
+                JsonObject daily = doc["results"][0]["daily"];
+                results_0_daily_0_high = daily["high"].as<String>();
+                results_0_daily_0_low = daily["low"].as<String>();
             }
         }
         weather_client.stop();
@@ -1766,8 +1778,8 @@ lv_obj_t *home_config_load()
 
     // Write codes time_text
     time_text = lv_textarea_create(now_screen);
-    lv_obj_set_pos(time_text, 222, 30);
-    lv_obj_set_size(time_text, 208, 77);
+    lv_obj_set_pos(time_text, 210, 40);
+    lv_obj_set_size(time_text, 225, 60);
     lv_obj_set_scrollbar_mode(time_text, LV_SCROLLBAR_MODE_OFF);
 
     // Set style for time_text. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
@@ -1811,12 +1823,12 @@ lv_obj_t *home_config_load()
     lv_obj_set_pos(screen_label_1, 73, 56);
     lv_obj_set_size(screen_label_1, 100, 32);
     lv_obj_set_scrollbar_mode(screen_label_1, LV_SCROLLBAR_MODE_OFF);
-    lv_label_set_text(screen_label_1, "时间");
+    lv_label_set_text(screen_label_1, "设置时间");
     lv_label_set_long_mode(screen_label_1, LV_LABEL_LONG_WRAP);
 
     // Set style for screen_label_1. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
     lv_obj_set_style_radius(screen_label_1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(screen_label_1, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(screen_label_1, lv_color_make(0xff, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(screen_label_1, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(screen_label_1, LV_GRAD_DIR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(screen_label_1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -1827,7 +1839,7 @@ lv_obj_t *home_config_load()
     lv_obj_set_style_shadow_ofs_x(screen_label_1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_y(screen_label_1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(screen_label_1, lv_color_make(0xff, 0xff, 0xff), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(screen_label_1, &lv_chinese_font_16_all, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(screen_label_1, &chinese_hei_16, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(screen_label_1, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(screen_label_1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(screen_label_1, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -1891,7 +1903,7 @@ lv_obj_t *home_config_load()
 
     // Set style for screen_label_2. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
     lv_obj_set_style_radius(screen_label_2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(screen_label_2, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(screen_label_2, lv_color_make(0x00, 0xff, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(screen_label_2, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(screen_label_2, LV_GRAD_DIR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(screen_label_2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -1901,8 +1913,8 @@ lv_obj_t *home_config_load()
     lv_obj_set_style_shadow_spread(screen_label_2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_x(screen_label_2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_y(screen_label_2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(screen_label_2, lv_color_make(0xff, 0xff, 0xff), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(screen_label_2, &lv_chinese_font_16_all, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(screen_label_2, lv_color_make(0x00, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(screen_label_2, &chinese_hei_16, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(screen_label_2, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(screen_label_2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(screen_label_2, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -1916,12 +1928,12 @@ lv_obj_t *home_config_load()
     lv_obj_set_pos(screen_label_3, 73, 187);
     lv_obj_set_size(screen_label_3, 100, 32);
     lv_obj_set_scrollbar_mode(screen_label_3, LV_SCROLLBAR_MODE_OFF);
-    lv_label_set_text(screen_label_3, "闹钟");
+    lv_label_set_text(screen_label_3, "设置闹钟");
     lv_label_set_long_mode(screen_label_3, LV_LABEL_LONG_WRAP);
 
     // Set style for screen_label_3. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT
     lv_obj_set_style_radius(screen_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(screen_label_3, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(screen_label_3, lv_color_make(0x00, 0x00, 0xff), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(screen_label_3, lv_color_make(0x21, 0x95, 0xf6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(screen_label_3, LV_GRAD_DIR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(screen_label_3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -1931,8 +1943,8 @@ lv_obj_t *home_config_load()
     lv_obj_set_style_shadow_spread(screen_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_x(screen_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_ofs_y(screen_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(screen_label_3, lv_color_make(0xff, 0xff, 0xff), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(screen_label_3, &lv_chinese_font_16_all, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(screen_label_3, lv_color_make(0x00, 0x00, 0x00), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(screen_label_3, &chinese_hei_16, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(screen_label_3, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(screen_label_3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(screen_label_3, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -1943,8 +1955,8 @@ lv_obj_t *home_config_load()
 
     // Write codes alarm_text
     alarm_text = lv_textarea_create(now_screen);
-    lv_obj_set_pos(alarm_text, 222, 179);
-    lv_obj_set_size(alarm_text, 209, 77);
+    lv_obj_set_pos(alarm_text, 210, 190);
+    lv_obj_set_size(alarm_text, 225, 60);
     lv_obj_set_scrollbar_mode(alarm_text, LV_SCROLLBAR_MODE_OFF);
 
     // Set style for alarm_text. Part: LV_PART_MAIN, State: LV_STATE_DEFAULT

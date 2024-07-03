@@ -15,6 +15,7 @@ void setup()
   lv_port_indev_init(); 
   WiFi.begin(ssid, password);
   pinMode(music_pin,OUTPUT);
+  SK6812Init();
   gui_init();
 }
 
@@ -23,5 +24,7 @@ void loop()
   lv_timer_handler(); 
   delay(5);
 }
+
+
 
 
