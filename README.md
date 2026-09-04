@@ -46,6 +46,38 @@ This repository preserves the firmware and hardware documentation from a 2024 un
 
 The original [schematic](hardware/schematic.png) and [prototype BOM](hardware/prototype-bom.xlsx) were recovered from the course materials. The assembled prototype changed the screen and audio wiring late in development, so treat both files as design records rather than guaranteed as-built documentation.
 
+## Hardware design files
+
+The available hardware material consists of exported design views rather than the original editable EDA project:
+
+- [Full-resolution schematic](hardware/schematic.png)
+- [Prototype BOM](hardware/prototype-bom.xlsx)
+- [PCB top-layer view](hardware/pcb-top-layer.png)
+- [PCB bottom-layer view](hardware/pcb-bottom-layer.png)
+- [PCB 3D preview](hardware/pcb-3d-preview.png)
+
+### Schematic
+
+<p align="center">
+  <a href="hardware/schematic.png">
+    <img src="hardware/schematic.png" alt="ESP32-S3 smart calendar schematic" width="900">
+  </a>
+</p>
+
+### PCB layout
+
+| Top layer | Bottom layer |
+|:---:|:---:|
+| <a href="hardware/pcb-top-layer.png"><img src="hardware/pcb-top-layer.png" alt="PCB top-layer routing" width="430"></a> | <a href="hardware/pcb-bottom-layer.png"><img src="hardware/pcb-bottom-layer.png" alt="PCB bottom-layer routing" width="430"></a> |
+
+### PCB 3D preview
+
+<p align="center">
+  <a href="hardware/pcb-3d-preview.png">
+    <img src="hardware/pcb-3d-preview.png" alt="PCB 3D preview" width="760">
+  </a>
+</p>
+
 ### GPIO map
 
 | Peripheral | ESP32-S3 pins |
@@ -116,7 +148,7 @@ src/app/fire/                Smoke alarm, RGB indicator, and email alert
 src/app/ota/                 MQTT remote-control screen
 src/driver/                  Display, touch, and filesystem ports
 lib/                         Bundled LVGL, TFT_eSPI, and GT911 sources
-hardware/                    Recovered schematic and prototype BOM
+hardware/                    Schematic, PCB exports, and prototype BOM
 docs/images/                 Prototype and interface photographs
 platformio.ini               Board, memory, dependency, and upload settings
 ```
